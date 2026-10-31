@@ -17,6 +17,8 @@ This page collects what we do **not** know, grouped by area, with a note on what
 | Can the model learn to issue the actions (look up, revisit, take a note) itself, better than fixed reflexes? | The long-term idea is a brain that gives orders to a body | Train on its own logged successful traces and compare with the reflexes | moderate |
 | Can the model's own margin notes or quiz answers ever be used as training text without collapse? | Using its own output risks collapse (published: Shumailov and colleagues 2023, Gerstgrasser and colleagues 2024) | A three-generation test with a ten percent share of its own notes and a real-text held-out loss | cheap |
 | Do the gains hold on data the model has partly seen, and over much longer streams? | The eight-domain test (section 8 of document 08) covered code and mathematics with 80,000 tokens each, all held-out text | A test on data from the training mix, and streams of millions of tokens | cheap |
+| Does the gain on never-read parts of a book come from reading, or from the replay steps? | It is the largest gain we have seen (+4 to +17 percent on five books), and a replay-only run could explain all of it | The replay-only control on the same stream, with its rule written first (document 08, section 12; still running) | cheap |
+| Can an implanted drive be measured in a finished model at all? | Four layer tests (chooser, prefix, drive text, steering) were killed or inconclusive at the settings tried (document 13, section 1) | The untested route: a small, steady drive share early in training, with a matched control share and its own rules file | moderate |
 
 ## Training (documents 03, 05, 06)
 
@@ -32,6 +34,7 @@ This page collects what we do **not** know, grouped by area, with a note on what
 | Is our recipe (Muon, small batches, constant rate with decay step-downs) better or worse than the standard recipe on our own data? | A second run with AdamW, a cosine schedule and large batches on the same data at the same token count; no such baseline exists yet, so document 04 cannot separate recipe from data | moderate |
 | Is the gap to Pythia's public checkpoints at the same number of tokens (document 04, section 5: 0.30 bits per byte in our favour) a data effect, a warm-up effect or a batch-size effect? | A Pythia-style run on our data at a matched schedule, and a run of ours with a large batch | moderate |
 | How much of SmolLM-135M's lead on our evaluation text is overlap with its training data? | A page-overlap check between our held-out documents and its training set | cheap to moderate |
+| Does a 1.5 percent share of web novels and song lyrics help the main chain, and does the held-out novel score move beyond ordinary training? | The main validation is level so far, and the held-out novel score is about 0.07 to 0.10 nats better, with no run without the share to compare against (document 03) | A matched run without the share, or a comparison of the same sessions later | moderate |
 
 ## Small-scale tests and the curriculum (document 09)
 
@@ -43,6 +46,14 @@ This page collects what we do **not** know, grouped by area, with a note on what
 ## Interpretability (document 07) and biology notes (document 10)
 
 The open questions of each study are listed at the end of its document. The common ones: whether findings on this one recipe at 143M parameters hold at other sizes, and whether any of the "plasticity" indicators we measured predict anything about later training.
+
+## Rewards and objectives (document 13)
+
+| Question | What would settle it | Cost |
+|---|---|---|
+| Does verifiable-reward reinforcement learning help a from-scratch model of about 143M parameters? Published evidence is at 1.5 billion and above | Test 2 of document 13: generated countdown puzzles, a floor gate, and a shuffled-reward control. Nothing has been run | cheap |
+| Does a small base model show checking and retrying before any reinforcement learning? | The base behaviour probe (document 13, test 1), which gates test 2 | cheap |
+| Does a thought before each token, scored without a checker, lower loss at small size? | The RLP-style proxy (document 13, test 7) | cheap to moderate |
 
 ## Method (document 12)
 

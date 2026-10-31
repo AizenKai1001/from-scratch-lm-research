@@ -2,7 +2,7 @@
 
 ## Summary
 
-We took a copy of our 143M-parameter model and let it keep learning while it reads: after scoring each short stretch of text it takes one small gradient step on that stretch. On whole books this lowered the loss on the text still to come by **2.4 to 4.6 percent**, in every tenth of every book, and the gain grew the further the model read. A control that took its steps from a different book made the same book **worse**, which is consistent with the gain coming from the text being read (one control, on two books). The price is a slow drift of the loss on ordinary web text; mixing in a small share of real training text (replay) removed most of it (+1.39 percent drift down to +0.36 percent). Revisiting the most surprising ten percent of segments made the weights keep those segments better (7.9 against 6.5 percent) but did not help prediction of later text. About 60 percent of what is learned about a book survives reading one or two more books. Results on other kinds of data (web pages, Wikipedia, fiction, science, math, code) are in section 8. A first quiz-based measurement of what the model knows after reading is in section 9: it was too easy to show any change in accuracy (its margins hint at a small book-specific gain), so we do not yet know whether the lower loss means knowledge of the book. A second, harder quiz found a small extra gain in confidence on the part of the book that had been read but no clear gain in accuracy, which is inconclusive by our rule. A test of dictionary cards in front of a sentence (section 10) failed its pre-written rule.
+We took a copy of our 143M-parameter model and let it keep learning while it reads: after scoring each short stretch of text it takes one small gradient step on that stretch. On whole books this lowered the loss on the text still to come by **2.4 to 4.6 percent**, in every tenth of every book, and the gain grew the further the model read. A control that took its steps from a different book made the same book **worse**, which is consistent with the gain coming from the text being read (one control, on two books). The price is a slow drift of the loss on ordinary web text; mixing in a small share of real training text (replay) removed most of it (+1.39 percent drift down to +0.36 percent). Revisiting the most surprising ten percent of segments made the weights keep those segments better (7.9 against 6.5 percent) but did not help prediction of later text. About 60 percent of what is learned about a book survives reading one or two more books. Results on other kinds of data (web pages, Wikipedia, fiction, science, math, code) are in section 8. A first quiz-based measurement of what the model knows after reading is in section 9: it was too easy to show any change in accuracy (its margins hint at a small book-specific gain), so we do not yet know whether the lower loss means knowledge of the book. A second, harder quiz found a small extra gain in confidence on the part of the book that had been read but no clear gain in accuracy, which is inconclusive by our rule. A test of dictionary cards in front of a sentence (section 10) failed its pre-written rule. Section 12 reports a longer run: the loop was stable over 22 bursts on a private collection of web novels and song lyrics, with large gains on parts of each book that were never read; the replay-only control for that run was still running when this was written, so those gains are a hint, not a result.
 
 All numbers below are **FACT** from our own logged runs unless marked otherwise. Setting for every run: the same 143M model, one run per setting (no repeated seeds: the procedure is deterministic given the text up to small numerical noise, about 0.0005 nats in our trainer; the differences we interpret are large against the block-to-block spread we report, but several small differences, such as 0.2 points between safeguards, rest on single runs).
 
@@ -196,6 +196,27 @@ Reading (numbers FACT, interpretation GUESS):
 
 A separate reviewer re-read the reading loop and ran checks on a CPU: (a) **no leak**: changing every token after a segment changes neither that segment's score nor any earlier one (bit-identical), with a positive control showing the test can fail; (b) the update rule is identical to our earlier pilot's; (c) the baseline always uses the unchanged weights, also when weights are carried from book to book; (d) a CPU run reproduced the graphics-card run (gain 0.0059639 nats in both, static and dynamic losses within 1.1e-5); (e) no exact 12-token phrase of the three books was found in our training data (27 searches; a retyped copy would not match, so this is not proof of absence). One conversion (bits per byte) was wrong for truncated books and was fixed; none of the numbers on this page used it.
 
+## 12. A longer run: stability, a replay control, and a hint
+
+All numbers in this section are **FACT** from our logs unless marked. The loop is the one described in sections 1 to 4: a step after each 128-token segment, a replay window after every eighth segment, and a rollback to the last good weights if the canary (the drift monitor on ordinary web windows) rises by more than 2 percent. Its pass and stop rules were written before the first run.
+
+**Stability on validation text.** Three bursts (about an hour, 18,303 segments, 306 visits of 100 segments) passed the stability rule: zero rollbacks and no alarm. The canary at the end of each burst was -0.80, -0.86 and -0.55 percent (limit +1.0). The paired gain over the frozen base was +0.122 nats per visit (interval +0.110 to +0.134; 293 of 306 visits positive).
+
+**Replay-only control on validation text.** For the first 6,104 segments, the same segments and the same replay windows were run with the reading updates switched off. Replay alone moved the canary more than the loop did (-1.07 against -0.80 percent). Reading added a gain on the next text of the same stream: about +7.6 points on science, +6.2 on code, +2.1 on math and +0.3 on the mixed web pool. That gain did not show on held-out windows of the same domain that were never read: the change there was between -0.4 and +0.7 points. So at this scale, reading helps with the text just read, in the way a cache does, and does not yet give a lasting gain across the domain. The stability claim stands, and the earlier wording that "the loop is learning" is narrowed accordingly (document 12).
+
+**A longer run on a private collection of web novels and song lyrics.** The loop read one full pass of five books and one set of song lyrics, each read once: 22 bursts and 130,065 segments. It ran with zero rollbacks and no alarm. The final canary change was +0.74 percent and never went above +1.15 percent. This shows stability over one pass, with one seed. It does not show stability over weeks.
+
+On the parts of each book that were never read, the live model was compared with the frozen base:
+
+| Text | Gain on never-read parts |
+|---|---|
+| Five books (one each) | +17.4, +10.1, +7.9, +5.7 and +4.1 percent |
+| Song lyrics | -0.9 percent |
+
+**Status: a hint, not a result.** The gains on unread parts are large, and unlike the validation run they are not local to the text just read. But the replay-only control for this run (same stream, replay steps only, no reading updates) had been started and had not finished when this was written. Replay alone could explain part or all of the gain, each book was read only once, and there is one seed. The song lyrics got slightly worse.
+
+The rule for the control was written before it ran. Reading counts as learning the book if the gain on unread parts minus the control's gain is at least +2.0 points on at least 4 of the 5 books. Replay explains the result if that difference is below +1.0 points on at least 3 of the 5 books. Anything else is inconclusive.
+
 ## What this does not show
 
 - That the reader is a better language model: the gains are measured on the text being read, the drift on other text is only partly controlled, and one run per setting was done.
@@ -207,5 +228,6 @@ A separate reviewer re-read the reading loop and ran checks on a CPU: (a) **no l
 
 - Which mix of replay share, step size and pull-back keeps a model stable over weeks of continuous reading?
 - Does a longer gap between revisits, or revisiting whole passages, improve what is kept?
+- Does the gain on unread parts of a book survive the replay-only control on the longer run (section 12, control still running)?
 - Does the gain survive on data the model has partly seen in training, and on code and mathematics?
 - Can the model itself decide what to revisit better than the surprise rule?

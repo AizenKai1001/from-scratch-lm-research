@@ -132,6 +132,13 @@ FACT for every row (read from the saved record of each session): production chai
 - Best value so far: session 41, 1.1149. Sessions 39 and 40 read 1.1199 and 1.1205, about two standard errors above session 38 (1.1161), and session 41 then fell to 1.1149: the curve is noisy at this level (one value has a standard error of about 0.002); the trend since session 27 is still downward.
 - The values are uncooled and overstate a cooled model. One cooled session from the session-11 checkpoint gave 1.1474 against 1.2495 uncooled (FACT, one seed; document 05). The cooled gap at later sessions has not been measured.
 
+## A private novel and song-lyrics share (from session 70)
+
+- FACT: from session 70 about 1.5 percent of the tokens in each session come from a private collection of web novels and song lyrics, the same collection as the reading run in document 08, section 12. The share is kept small on purpose. The collection is about 15.6 million tokens, so one pass takes about 20 sessions, and the plan is to add more text before raising the share.
+- FACT: a held-out novel and song-lyrics score is now printed with every session check, on the same windows each time (standard error about 0.03 nats). Novel text: 3.281 nats at session 68 (before the share), 3.182 at session 76 and 3.214 at session 77. Song lyrics: 2.704, 2.698 and 2.713.
+- FACT: the main validation (the web mix in the table above) did not move beyond noise. Sessions 68 and 69 read 1.1092 and 1.1033 (mean 1.1063). Sessions 70 to 76 read 1.1130, 1.1087, 1.1072, 1.1081, 1.1134, 1.1084 and 1.1049 (mean 1.1091). This is the result expected for a small share of different text.
+- GUESS: the held-out novel score improved by about 0.07 to 0.10 nats (about 2 to 3 percent) after the share was added. Ordinary training also moves that score, and there is no run without the share yet, so this cannot yet be separated from ordinary training progress. The score will be watched against the sessions that follow.
+
 ## Throughput
 
 - FACT (production card): 34,642 tokens per second in the measured 24-minute run; between about 33,700 and 34,200 in logged chain sessions (33,855 at session 27, 33,873 at session 23, 33,895 at session 32).

@@ -2,7 +2,7 @@
 
 Research notes, tests, results and open questions from training a 143-million-parameter language model from scratch on two consumer graphics cards, and from experiments on a model that keeps learning while it reads.
 
-**This repository contains documentation only: no code, no data and no model weights.** Status of the numbers: 30 October 2026. The work is still running, so everything here is a snapshot, and each document says what a number was measured on.
+**This repository contains documentation only: no code, no data and no model weights.** Status of the numbers: 31 October 2026. The work is still running, so everything here is a snapshot, and each document says what a number was measured on.
 
 ## What the project is
 
@@ -21,6 +21,7 @@ Research notes, tests, results and open questions from training a 143-million-pa
 | What has been tested, and what is proven? | The table below and documents 05 to 10 |
 | What is still open? | [11 Open questions](docs/11-open-questions.md) |
 | How much should you trust any of it? | [12 Method and honesty log](docs/12-method-and-honesty-log.md) |
+| Can the reader be given a drive, and which rewards beyond next-word prediction are worth testing? | [13 Drive layer and reward research](docs/13-drive-layer-and-reward-research.md) |
 
 ## Results at a glance
 
@@ -45,6 +46,9 @@ What held up against a control or against a prediction that could have failed: t
 | A dictionary entry for a rare word placed in front of a sentence makes that word about 7 nats easier to predict (a copy effect), but learning with it was worse than learning with another word's entry, in all 50 words: the look-up as a learning action failed its pre-written rule. | 50 rare words, paired, one snapshot | measured; killed by the rule written beforehand | [08](docs/08-learning-while-reading.md) |
 | A previous-token key shift makes induction heads appear by 3 million tokens; many other readings from 20 interpretability studies were narrowed or withdrawn on re-check. | Small CPU studies, mostly one seed | measured, with reviews | [07](docs/07-interpretability-findings.md) |
 | Our unfinished 143M model (session 36, 1.85 billion training tokens) is level with GPT-2 small and Pythia-160M on HellaSwag and the two ARC tests, behind them on LAMBADA and by about 0.1 bits per byte on held-out web text of the kind it trained on, above Pythia-70M, and far below SmolLM-135M. It used 160 to 320 times fewer training tokens than Pythia and SmolLM. At about 2 billion tokens it is 0.30 bits per byte ahead of Pythia's own step-1000 checkpoints, which are unfinished and trained on different data with a 64-times larger batch. | One script for every model; 234 held-out documents | measured; not a ranking of recipes, because there is no same-data standard baseline | [04](docs/04-comparison-with-other-models.md) |
+| Reading with replay, as one loop: stable over three bursts on validation text (zero rollbacks), and over 22 bursts (about 130,000 segments, one pass) on a private collection of web novels and song lyrics. Replay alone moved the canary more than the loop did; reading's gain showed only on the text just read. On the parts of each book never read, the gains were +4.1 to +17.4 percent (the lyrics -0.9 percent) | One 143M copy; one seed; the replay-only control for the long run was still running | measured; the long-run gains are a hint, not a result | [08](docs/08-learning-while-reading.md) |
+| Four designs for an implanted drive (a chooser, a standing inner-voice prefix, drive text in the reading stream, a steering vector) were killed or inconclusive. The best one, steering, gave +0.32 nats but moved the canary by 1.4 percent, above its limit | Matched controls in every arm; rules written first | measured; killed or inconclusive by the rules | [13](docs/13-drive-layer-and-reward-research.md) |
+| Verifiable-reward reinforcement learning and other reward ideas: most evidence is at 1.5 billion parameters and above. The planned tests at 143M have written pass and kill rules | Literature review in two passes | published evidence; tests open, none run | [13](docs/13-drive-layer-and-reward-research.md) |
 
 ## What is not shown
 
@@ -69,7 +73,8 @@ What held up against a control or against a prediction that could have failed: t
 | 09 | [Small-scale proxy tests and the curriculum test](docs/09-small-scale-proxy-tests-and-the-curriculum-test.md) | The 4.5M-parameter proxy, the hardware control, the weight-decay rounds, easy-to-hard ordering |
 | 10 | [Adaptation and biology notes](docs/10-adaptation-and-biology-notes.md) | Ideas taken from brains, animals and immune systems, which were tested, and 24 corrections |
 | 11 | [Open questions](docs/11-open-questions.md) | What we do not know, what would settle it and roughly what it costs |
-| 12 | [Method and honesty log](docs/12-method-and-honesty-log.md) | How the experiments are run, the claims we had to correct, tooling errors, predictions against outcomes |
+| 12 | [Method and honesty log](docs/12-method-and-honesty-log.md) | How the experiments are run, the claims we had to correct, tooling errors, predictions against outcomes, rules adopted on 31 October |
+| 13 | [Drive layer and reward research](docs/13-drive-layer-and-reward-research.md) | The four implanted-drive designs and their numbers, and the literature on rewards beyond next-word prediction with the planned tests and their rules |
 
 ## How to read the labels
 
