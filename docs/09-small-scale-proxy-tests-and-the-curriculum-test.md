@@ -85,7 +85,7 @@ The design was written on 30 October at 2:24 AM, before any run (FACT):
 Labels: FACT (design and data build). Three points about the arms:
 
 - Arm C, standard text sorted by reading level, was designed but not run.
-- Arm E was added after the design note was written. The rule is defined on arms A, B, D and C, so E is reported descriptively and sits outside the decision (FACT).
+- Arm E was added after the design note was written. The rule is defined on arms A, B and D (arm C was never run), so E is reported descriptively and sits outside the decision (FACT).
 - The screen was first planned for the home card, which would have meant pausing the comparison run from document 06. It ran on free cloud GPUs instead (FACT).
 
 Results, bits per byte on the standard validation set, final cooled, two seeds per arm (FACT). The second-text column is held-out text of the broad pool, the production mixture.

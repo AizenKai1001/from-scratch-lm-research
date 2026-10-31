@@ -25,15 +25,15 @@ Claims are written down with their setting, rules for deciding are written befor
 **Idea.** With the optimizers we use, the size of the weight matrices settles where the pull of weight decay balances the push of the updates. That balance depends on the decay value, so changing the decay moves the matrices to a new size over a time that is set by the decay itself. A larger matrix makes every update a smaller relative step, so lowering the decay behaves like slowing the learning rate down, without touching the learning rate.
 **What the idea implies.** When decay falls five-fold, the squared matrix scale should settle about five times higher, i.e. the scale itself about 2.24 times higher (the square root of five).
 **Prediction we wrote down before the second-session snapshots were scanned.** A further growth of 1.05 to 1.13 times in the second session after the change.
-**FACT.** The mean matrix scale rose by 2.02 and 1.96 times in the first session after the change in the two training chains, then by a further 1.11 and 1.13 times (both inside the predicted range). After two sessions the main chain stood at 2.24 times its starting value, which looked like the square root of five, but it did not stop there: 2.31 times after three sessions and 2.33 times after four (the second chain: 2.20 after two, 2.28 after three, still growing).
-**Correction (document 12).** We first reported the 2.24 as the equilibrium; that was wrong. The plateau is about 4 percent above the square root of five (GUESS: squared ratio near 5.4, not 5), so the simple balance model gets the first-session jump and the time scale right and the final level slightly wrong.
+**FACT.** The matrix scale rose by about 2.0 times in the first session after the change in the two training chains (2.01 and 1.96), then by a further 1.11 and 1.13 times (both inside the predicted range). After two sessions the main chain stood at 2.24 times its starting value, which looked like the square root of five, but it did not stop there: 2.31 times after three sessions and 2.33 times after four (the second chain: 2.20 after two, 2.28 after three, still growing).
+**Correction (document 12).** We first reported the 2.24 as the equilibrium; that was wrong. The series was still rising (1.010 in the last session), so the level it will reach is not known; our best guess is about 4 percent above the square root of five (squared ratio near 5.4, not 5). The simple balance model gets the first-session jump and the time scale right and the final level slightly wrong.
 **What it explains and what it does not (GUESS).** The loss fell sharply when the decay was lowered at constant learning rate. The working explanation is a partial learning-rate cooldown caused by the growing matrices, not better learning. We have not isolated this directly.
 
 ### 3.2 Learning while reading (documents 08 and 10)
 
 **Idea.** Gradient steps taken on the text a model has just read should make the rest of that text easier to predict, because texts repeat their own names, topics and style. This is called dynamic evaluation in the literature (PUBLISHED: Krause and colleagues, 2019, report 5.3 percent lower loss for a 277M Transformer-XL on character-level text; Rannen-Triki and colleagues, 2024, arXiv 2403.01518, report about 1.3 percent, 2.0 percent with a reset per book, for 150M to 1B models).
-**Prediction we wrote down.** A small, careful step size would give a gain well below 1 percent after a few updates (the 29 Oct pilot guess was 0 to 0.006 bits per byte).
-**FACT.** The pilot gave 0.67 percent after three updates; reading whole books with a small step after every 128 tokens gave 2.4 to 4.6 percent, in every tenth of every book; updates taken from another book made the same book worse (-1.27 percent), so the gain is about the text being read.
+**Prediction we wrote down.** A small, careful step size would give a gain well below 1 percent after a few updates (the 29 Oct pilot guess was 0 to 0.006 bits per byte; the pilot beat it, see below).
+**FACT.** The pilot gave 0.67 percent after three updates (0.6 percent over all 128 windows after review); reading whole books with a small step after every 128 tokens gave 2.4 to 4.6 percent, in every tenth of every book; updates taken from another book made the same book worse (-1.27 percent), which is consistent with the gain coming from the text being read (one control, on two books).
 
 ### 3.3 Replay, because reading changes the model (document 08)
 
@@ -43,7 +43,7 @@ Claims are written down with their setting, rules for deciding are written befor
 ### 3.4 Surprise as a reason to look again (documents 08 and 10)
 
 **Idea.** People look back at words that surprised them. If a model's own surprise is used to pick which segments to revisit, the revisited segments should be remembered better than segments picked at random.
-**FACT.** Revisiting the surprising ten percent of segments made the weights keep those segments better (7.9 percent against 6.5 percent lower loss afterwards); revisiting the same number of random segments gave 6.7 percent. It did not change how well the model predicted later text. Whether it helps answer questions about the revisited text is not yet measured.
+**FACT.** Revisiting the surprising ten percent of segments made the weights keep those segments better (7.9 percent against 6.5 percent lower loss afterwards); revisiting the same number of random segments gave 6.7 percent on those same surprising segments (and 5.75 percent on the random segments, against 5.60 with no revisits). It did not change how well the model predicted later text. Whether it helps answer questions about the revisited text is not yet measured.
 
 ### 3.5 Quizzes as a thermometer, not a teacher (document 08)
 
@@ -53,7 +53,7 @@ Claims are written down with their setting, rules for deciding are written befor
 ### 3.6 Brain and body
 
 **Idea.** Instead of teaching one model to emit elaborate tool-call formats, split the system: a **brain** (the language model) that reads and decides, and a **body** (ordinary programs) that carries out small actions: look a word up, go back over a span, write a margin note, continue. The body also has **reflexes**: a rule such as "a word that is rare in our training data and surprising triggers a look-up" fires without waiting for the brain. Later the brain can learn to issue the same actions itself, trained on its own successful traces. Perception (hearing, seeing) would be further bodies that run independently of the brain.
-**Status.** Version 1 uses reflexes only. We tested whether the actions help at all (learning while reading: yes; revisiting surprising spans: it strengthens memory of those spans; dictionary look-ups: data prepared, test not yet run) before building anything for the brain to control.
+**Status.** Version 1 uses reflexes only. We tested whether the actions help at all (learning while reading: yes; revisiting surprising spans: it strengthens memory of those spans; dictionary look-ups: the entry in context made the word about 7 nats easier to predict, a copy effect, but learning with it was worse than learning with another word's entry, so the look-up as a learning action failed its pre-written rule; document 08, section 10) before building anything for the brain to control.
 
 ## 4. What this does not show
 

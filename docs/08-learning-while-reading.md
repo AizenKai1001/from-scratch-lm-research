@@ -2,9 +2,9 @@
 
 ## Summary
 
-We took a copy of our 143M-parameter model and let it keep learning while it reads: after scoring each short stretch of text it takes one small gradient step on that stretch. On whole books this lowered the loss on the text still to come by **2.4 to 4.6 percent**, in every tenth of every book, and the gain grew the further the model read. A control that took its steps from a different book made the same book **worse**, so the gain is learning about the text being read. The price is a slow drift of the loss on ordinary web text; mixing in a small share of real training text (replay) removed most of it (+1.39 percent drift down to +0.36 percent). Revisiting the most surprising ten percent of segments made the weights keep those segments better (7.9 against 6.5 percent) but did not help prediction of later text. About 60 percent of what is learned about a book survives reading one or two more books. Results on other kinds of data (web pages, Wikipedia, fiction, science, math, code) are in section 8. A first quiz-based measurement of what the model knows after reading is in section 9: it was too easy to show any change, so we do not yet know whether the lower loss means knowledge of the book.
+We took a copy of our 143M-parameter model and let it keep learning while it reads: after scoring each short stretch of text it takes one small gradient step on that stretch. On whole books this lowered the loss on the text still to come by **2.4 to 4.6 percent**, in every tenth of every book, and the gain grew the further the model read. A control that took its steps from a different book made the same book **worse**, which is consistent with the gain coming from the text being read (one control, on two books). The price is a slow drift of the loss on ordinary web text; mixing in a small share of real training text (replay) removed most of it (+1.39 percent drift down to +0.36 percent). Revisiting the most surprising ten percent of segments made the weights keep those segments better (7.9 against 6.5 percent) but did not help prediction of later text. About 60 percent of what is learned about a book survives reading one or two more books. Results on other kinds of data (web pages, Wikipedia, fiction, science, math, code) are in section 8. A first quiz-based measurement of what the model knows after reading is in section 9: it was too easy to show any change, so we do not yet know whether the lower loss means knowledge of the book. A test of dictionary cards in front of a sentence (section 10) failed its pre-written rule.
 
-All numbers below are **FACT** from our own logged runs unless marked otherwise. Setting for every run: the same 143M model, one run per setting (no repeated seeds: the procedure is deterministic given the text, and the differences we interpret are large against the block-to-block spread we report).
+All numbers below are **FACT** from our own logged runs unless marked otherwise. Setting for every run: the same 143M model, one run per setting (no repeated seeds: the procedure is deterministic given the text up to small numerical noise, about 0.0005 nats in our trainer; the differences we interpret are large against the block-to-block spread we report, but several small differences, such as 0.2 points between safeguards, rest on single runs).
 
 ## 1. Setup
 
@@ -13,8 +13,8 @@ All numbers below are **FACT** from our own logged runs unless marked otherwise.
 - **The step.** For every weight tensor the update is a fixed fraction (the "relative step", written eta) of the tensor's own typical size, in the direction of the normalised gradient. It is applied to every tensor except the input-embedding table and the value-embedding tables (about 63 million parameters); the other 80 million (the hidden matrices, the output head and the scalars) are updated.
 - **Drift monitor ("canary").** Sixteen fixed windows of ordinary web text (never trained on), scored with the current weights every 100 segments.
 - **Speed.** About 0.17 seconds per update on a consumer 8 GB graphics card.
-- **Text.** Public-domain English books (long, coherent, never trained on) for sections 2 to 7; held-out validation shards of our own data mixes for section 8.
-- **Code review.** A separate AI reviewer checked the reading loop for leaks and wrong numbers (section 10).
+- **Text.** Public-domain English books (long and coherent; a search found no exact 12-token phrase of the three main books in our training data, which is not proof that they were never in it) for sections 2 to 7; held-out text for section 8 (validation shards of our data mixes, science papers that are in neither training pool, and code and math pages disjoint from the training text).
+- **Code review.** A separate AI reviewer checked the reading loop for leaks and wrong numbers (section 11).
 
 ## 2. Finding the step size (tuning book, first 30,000 tokens)
 
@@ -79,7 +79,7 @@ A revisit is one more gradient step on a segment already read. Ten percent of th
 | revisit hard segments 50 segments later (spaced) | 3.14 % | +0.53 % | 7.91 % | 5.71 % |
 | revisit random segments 50 segments later | 3.13 % | +0.48 % | 6.73 % | 5.75 % |
 
-Revisiting does **not** change how well the model predicts the text that follows. Revisiting the **surprising** segments makes the weights keep exactly those segments better (+1.4 points); revisiting the same number of random segments does little. Spaced and back-to-back revisits are indistinguishable at a 50-segment gap (we have not tested the 1,000-step gap that the memory literature would suggest). So at this scale a revisit works as a memory strengthener, not as extra understanding. Cost: about 10 percent more steps and 0.1 to 0.2 points of extra drift.
+Revisiting does **not** change how well the model predicts the text that follows. Revisiting the **surprising** segments makes the weights keep exactly those segments better (+1.4 points; one book, one run); revisiting the same number of random segments does little. Spaced and back-to-back revisits are indistinguishable at a 50-segment gap (we have not tested the 1,000-step gap that the memory literature would suggest). So at this scale a revisit works as a memory strengthener, not as extra understanding. Cost: about 10 percent more steps and 0.1 to 0.2 points of extra drift.
 
 ## 7. What the failed and finished side tests say
 
@@ -103,7 +103,7 @@ The books above were chosen because they are long and clean. The reader is meant
 
 Reading (numbers FACT, interpretation GUESS):
 1. **Learning while reading helps on every kind of data we tried**, in every tenth of every stream, but by very different amounts: 13.9 percent on code and 9.9 percent on science papers, down to under 1 percent on ordinary web pages.
-2. The gain is largest where the text **repeats its own names, terms and patterns** (a code file, a paper, a novel) and smallest where every page is a new topic (a stream of unrelated web pages). On the two web streams the gain does not grow along the stream (first and last tenth about equal); on the others it does.
+2. The gain is largest where the text **repeats its own names, terms and patterns** (a code file, a paper, a novel) and smallest where every page is a new topic (a stream of unrelated web pages). On the FineWeb-Edu web stream the gain does not grow along the stream (first and last tenth about equal), on the DCLM web stream it rises slightly (0.012 to 0.022 nats), and on the others it grows clearly.
 3. With replay, the loss on the ordinary-web-text canary stayed between -0.3 and +1.0 percent in all eight runs, even after 80,000 tokens of code (+0.99 percent, the largest).
 4. Caveats: one run per stream, 80,000 tokens each, no foreign-text control for these streams, and the code and science streams have much lower baseline loss, so a given absolute gain is a larger percentage.
 
@@ -145,9 +145,36 @@ Reading (numbers FACT, interpretation GUESS):
 5. **Spaced revisits of the hardest spans changed nothing visible** in this quiz (read half 89.5 percent at the end in both runs; unread half 88.7 against 87.9 percent, one item).
 6. **Cost:** the canary rose by 0.6 to 1.5 percent after the first part and by 0.7 to 1.1 percent at the end of the book, two to three times the +0.36 percent of section 4. The books and the canary windows differ, so this is not a clean comparison.
 
-**What this does and does not show.** The loss gains of section 3 (2 to 5 percent) do not appear as a visible change in this quiz. That does not show that the model learned nothing about the book: the quiz is too easy to start with, the wrong options come from the same book (so learning the book raises them too), many items can probably be solved from grammar alone (GUESS, not measured), and each cell has only about 140 items. It does show that this form of the quiz is not sensitive enough to serve as the "thermometer" of document 01 for this kind of reading. A harder version is needed: wrong options that fit the sentence, questions about names and events that cannot be guessed from grammar, and more items.
+**What this does and does not show.** The loss gains of section 3 (2 to 5 percent) do not appear as a visible change in this quiz. That does not show that the model learned nothing about the book: the quiz is too easy to start with, the wrong options come from the same book (so learning the book raises them too), many items can probably be solved from grammar alone (GUESS, not measured), and each cell has only about 140 items. It does show that this form of the quiz is not sensitive enough to serve as the "thermometer" of document 01 for this kind of reading. A harder version is needed: wrong options that fit the sentence, questions about names and events that cannot be guessed from grammar, and more items. Such a bank (190 items per book: names, and words with sentence-fitting wrong options chosen by the unchanged model, on which that model scores 29 to 47 percent) is built and has not yet been run with reading.
 
-## 10. Review of the method
+## 10. Dictionary cards in front of a sentence (FACT)
+
+**Question.** Does the dictionary entry (a "card") of a rare word, put in front of a sentence that uses the word, help the model predict that word? And do three learning steps on card plus sentence teach the word better than three steps with the card of a different word? **Setting.** Fifty rare words, each with a one-line dictionary entry, four training sentences and four held-out sentences from other books; the session-36 snapshot, 32-bit arithmetic, three relative steps of 3e-5 for the learning arms (loss on the sentence tokens only). The measure is the summed log-probability of the target word's own tokens in each held-out sentence (higher is better). The control for each word is the card of a different word of about the same training frequency; everything is paired over the words (bootstrap over the 50 words). The pass and kill rules were written before any number: for each of the two contrasts, a 5 percent lower loss on the target word, an interval above zero and at least 60 percent of the words improved; a contrast whose interval stays below +0.05 nats is killed.
+
+| Arm | What happens | Mean target log-probability (nats) |
+|---|---|---|
+| S | no card, no learning | -16.45 |
+| K | the word's own card in front, no learning | -8.96 |
+| KC | another word's card in front, no learning | -16.02 |
+| L | three learning steps on own card plus one training sentence, then the held-out sentence without a card | -14.26 |
+| LC | the same with the other word's card | -12.83 |
+
+| Contrast | Mean difference (nats) | 95% interval | Words improved | Verdict |
+|---|---|---|---|---|
+| In context: K minus KC | +7.06 | +6.30 to +7.83 | 50 of 50 | pass |
+| After learning: L minus LC | -1.43 | -1.72 to -1.17 | 0 of 50 | **killed** |
+
+By the rule written beforehand the verdict is **KILL**: the learning contrast failed. All correctness checks passed (the unchanged-model score equals an independent forward pass within 1e-6 nats, the weights are restored exactly after every word, nothing after the target word changes what comes before it).
+
+Reading (numbers FACT, interpretation GUESS):
+1. **In context the card helps a great deal (about 7 nats), but the card contains the word, so this is mostly a copy effect.** It is cheap and expected and it does not show learning.
+2. **Learning steps on the sentence raise the word by 2.2 to 3.6 nats whatever the card** (L minus S, LC minus S): that is exposure to the word in the training sentence.
+3. **The right card made the learning worse than another word's card, in all 50 words.** GUESS: with its own card in front, the word is already predictable in the training sentence, so the update has little to learn about the word; with another word's card it is a surprise and the update teaches it. The whole-sentence loss agrees (the own-card arm is worse by 0.05 nats per token in all 50 words).
+4. So, as designed (card as context, loss on the sentence only), the look-up does not help learning and is switched off. A design in which the model also learns the card text, with a control that gives the word the same number of exposures, is a different test and needs its own rules.
+
+**Limits.** One snapshot, one training sentence per word, three steps at one step size, first-sense dictionary glosses (15 of the 50 cards describe the base word of an inflected form), frequency matched by training count only. The first two launches on the graphics card stopped in a correctness check that only works on the CPU; they produced no result and were not read.
+
+## 11. Review of the method
 
 A separate reviewer re-read the reading loop and ran checks on a CPU: (a) **no leak**: changing every token after a segment changes neither that segment's score nor any earlier one (bit-identical), with a positive control showing the test can fail; (b) the update rule is identical to our earlier pilot's; (c) the baseline always uses the unchanged weights, also when weights are carried from book to book; (d) a CPU run reproduced the graphics-card run (gain 0.0059639 nats in both, static and dynamic losses within 1.1e-5); (e) no exact 12-token phrase of the three books was found in our training data (27 searches; a retyped copy would not match, so this is not proof of absence). One conversion (bits per byte) was wrong for truncated books and was fixed; none of the numbers on this page used it.
 

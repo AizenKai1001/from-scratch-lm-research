@@ -4,11 +4,12 @@ How to read the labels. FACT is measured in our own runs, with the setting state
 
 ## Summary
 
-We compared the 143-million-parameter model with public models of similar size in three ways: the same four zero-shot benchmarks run through one script for every model, bits per byte on the same held-out web text, and the numbers other authors have published. The snapshot used is session 36 (1.85 billion training tokens, no cooldown yet), with sessions 11 and 20 for the trend.
+We compared the 143-million-parameter model with public models of similar size (and GPT-2 medium for bits per byte) in three ways: the same four zero-shot benchmarks run through one script for every model, bits per byte on the same held-out web text, and the numbers other authors have published. The snapshot used is session 36 (1.85 billion training tokens, no cooldown yet), with sessions 11 and 20 for the trend.
 
-- **Benchmarks (FACT).** At session 36 our model is level with GPT-2 small and Pythia-160M on HellaSwag and the two ARC tests, a little higher on ARC-Easy, clearly lower on LAMBADA, and well above Pythia-70M. It is far below SmolLM-135M. HellaSwag, ARC-Easy and LAMBADA rose steadily from session 11 to 20 to 36; the ARC-Challenge scores stayed within noise.
+- **Benchmarks (FACT).** At session 36 our model is level with GPT-2 small and Pythia-160M on HellaSwag and the two ARC tests, a little higher on ARC-Easy, clearly lower on LAMBADA, and well above Pythia-70M. It is far below SmolLM-135M. ARC-Easy and LAMBADA rose steadily from session 11 to 20 to 36, HellaSwag rose between sessions 20 and 36, and the ARC-Challenge scores stayed within noise.
 - **Bits per byte on held-out text of the kind we train on (FACT).** Our model needs 1.080. GPT-2 small needs 0.986, Pythia-160M 0.982 and SmolLM-135M 0.846; Pythia-70M needs 1.113. So we are 0.095 behind GPT-2 small and 0.033 ahead of Pythia-70M.
 - **Training data.** We got there with 1.85 billion training tokens. GPT-2 small saw an estimated 9 billion or more, Pythia 300 billion and SmolLM-135M 600 billion.
+- **At the same number of tokens (FACT, section 5).** Against Pythia's own public checkpoints at about 2.1 billion tokens, our session-40 snapshot (2.05 billion) is 0.30 bits per byte better and ahead on every benchmark. Those checkpoints are unfinished (still in warm-up), trained on different data with a batch 64 times larger, so this does not show that our recipe beats the standard one.
 - **What this does not show.** It does not rank recipes. The models differ in data by up to 300 times, our model is unfinished, our evaluation text comes from the same family as our training data, and we have not trained a baseline with the standard recipe on our own data, so we cannot say whether our recipe is better or worse than the standard one. The comparison is a position report, not a verdict.
 
 ## 1. The models
@@ -18,8 +19,8 @@ We compared the 143-million-parameter model with public models of similar size i
 | Ours, session 11 | 142.9M | 0.60 billion | 4 | FineWeb-Edu sample and a broad pool of six human-written corpora (documents 03 and 06) |
 | Ours, session 20 | 142.9M | 1.05 billion | 7 | same |
 | Ours, session 36 | 142.9M | 1.85 billion | 13 | same |
-| Our earlier run A (document 07) | 142.9M | 2.29 billion: 1.88 billion in a rented-GPU run, then 0.41 billion on our educational web file, ending with a cooldown session | 16 | different, see text |
-| GPT-2 small | 124.4M | not stated by the authors; an open replication of the same kind of web corpus has about 9 billion (estimate) | about 70 (estimate) | WebText: pages linked from Reddit, Wikipedia removed (PUBLISHED) |
+| Our earlier model A (document 07) | 142.9M | 2.29 billion: 1.88 billion in a rented-GPU run, then 0.41 billion on our educational web file, ending with a cooldown session | 16 | different, see text |
+| GPT-2 small | 124.4M | not stated by the authors; an open replication of the same kind of web corpus (OpenWebText) is listed with about 9 billion GPT-2 tokens (a web-search result, page not opened in full; estimate) | about 70 (estimate) | WebText: pages linked from Reddit, Wikipedia removed (PUBLISHED) |
 | Pythia-70M | 70.4M | 299.9 billion | 4,260 | The Pile (PUBLISHED) |
 | Pythia-160M | 162.3M | 299.9 billion | 1,850 | The Pile (PUBLISHED) |
 | SmolLM-135M | 134.5M | 600 billion | 4,460 | FineWeb-Edu (deduplicated, 220 billion tokens), synthetic textbooks and stories (28 billion), Python code (4 billion) (PUBLISHED) |
@@ -35,7 +36,7 @@ The three SmolLM components add up to 252 billion unique tokens, so 600 billion 
 | **Ours, session 11 (0.60B tokens)** | 27.2 / 28.8 | 41.8 / 39.4 | 19.4 / 24.0 | 16.8 | 535.7 |
 | **Ours, session 20 (1.05B tokens)** | 27.5 / 28.9 | 43.9 / 41.9 | 18.9 / 23.3 | 23.3 | 134.8 |
 | **Ours, session 36 (1.85B tokens)** | 28.6 / 30.5 | 46.4 / 43.1 | 19.7 / 24.5 | 26.8 | 79.7 |
-| Our earlier run A (2.29B tokens, cooled) | 29.2 / 32.2 | 49.7 / 44.2 | 21.8 / 25.1 | 29.7 | 61.0 |
+| Our earlier model A (2.29B tokens, cooled) | 29.2 / 32.2 | 49.7 / 44.2 | 21.8 / 25.1 | 29.7 | 61.0 |
 | Pythia-70M (300B tokens) | 26.7 / 27.5 | 37.5 / 35.2 | 17.5 / 21.3 | 22.7 | 131.0 |
 | GPT-2 small | 28.9 / 31.2 | 43.8 / 39.9 | 19.0 / 22.4 | 32.6 | 40.1 |
 | Pythia-160M (300B tokens) | 28.4 / 30.2 | 43.6 / 40.1 | 19.5 / 23.5 | 35.4 | 37.3 |
@@ -43,18 +44,18 @@ The three SmolLM components add up to 252 billion unique tokens, so 600 billion 
 
 **Reading (FACT for the numbers, GUESS for the interpretation).**
 
-1. **Our model improves with data.** From session 11 to 36 every column is higher: HellaSwag by 1.6 points normalised, ARC-Easy by 4.6, LAMBADA accuracy by 10.0 points and LAMBADA perplexity falls from 536 to 80. The two ARC-Challenge columns moved by 0.3 and 0.5 points, less than the noise.
-2. **At session 36 our model is level with the two standard 124M to 162M models on three tests.** HellaSwag normalised 30.5 against 31.2 (GPT-2 small) and 30.2 (Pythia-160M); ARC-Challenge 24.5 against 22.4 and 23.5 (normalised); ARC-Easy 46.4 against 43.8 and 43.6, which is about 1.8 to 1.9 standard errors of the difference above: suggestive, not clear. It is clearly above Pythia-70M on HellaSwag, ARC-Easy and LAMBADA.
+1. **Our model improves with data.** From session 11 to 36 every column is higher: HellaSwag by 1.7 points normalised, ARC-Easy by 4.6, LAMBADA accuracy by 10.0 points and LAMBADA perplexity falls from 536 to 80. The two ARC-Challenge columns moved by 0.3 and 0.5 points, less than the noise.
+2. **At session 36 our model is level with the two standard 124M to 162M models on three tests.** HellaSwag normalised 30.5 against 31.2 (GPT-2 small) and 30.2 (Pythia-160M); ARC-Challenge 24.5 against 22.4 and 23.5 (normalised); ARC-Easy 46.4 against 43.8 and 43.6, which is about 1.8 to 2 standard errors of the difference above: suggestive, not clear. It is clearly above Pythia-70M on HellaSwag, ARC-Easy and LAMBADA.
 3. **LAMBADA is our weak spot:** 26.8 percent against 32.6 and 35.4 for GPT-2 small and Pythia-160M. GUESS: LAMBADA is built from passages of unpublished novels, our training mix is mostly educational web text, and fiction makes up about a tenth of the pool.
 4. **SmolLM-135M is far ahead of us:** HellaSwag normalised 42.7 against our 30.5, ARC-Easy 61.6 against 46.4, ARC-Challenge 29.0 against 24.5 (normalised), LAMBADA 37.7 against 26.8. It saw about 320 times as many tokens, partly synthetic textbook text.
-5. **Run A, a different and cooled model, scores higher than our current uncooled snapshot** (HellaSwag normalised 32.2 against 30.5, ARC-Easy 49.7 against 46.4, LAMBADA 29.7 against 26.8). It saw 2.29 billion tokens on different data and ended with a cooldown session, so the difference mixes cooling, data and token count; it is the best hint we have of what a cooldown may add (GUESS), not a measurement of it.
-6. **The script reproduces published numbers for other people's models.** For Pythia-160M the published ARC-Easy is 43.5 and 43.2 (two papers) against our 43.6; HellaSwag normalised is 30.2 against our 30.2; LAMBADA perplexity is 38.1 against our 37.3; for Pythia-70M the published ARC-Easy is 37.4 against our 37.5; for SmolLM-135M the published HellaSwag is 41.2 against our 42.7 (normalised), within about a point and a half. LAMBADA accuracy differs more between sources (32.8, 33.0 and 38.9 for Pythia-160M; ours 35.4; Pythia-70M published 18.5, ours 22.7), as section 4 shows. So differences of a point or two on ARC and HellaSwag between our table and a paper are within the spread between published sources.
+5. **Model A, a different and cooled model, scores higher than our current uncooled snapshot** (HellaSwag normalised 32.2 against 30.5, ARC-Easy 49.7 against 46.4, LAMBADA 29.7 against 26.8). It saw 2.29 billion tokens on different data and ended with a cooldown session, so the difference mixes cooling, data and token count; it is the best hint we have of what a cooldown may add (GUESS), not a measurement of it.
+6. **The script approximately reproduces published numbers for other people's models.** For Pythia-160M the published ARC-Easy is 43.5 and 43.2 (two papers) against our 43.6; HellaSwag normalised is 30.2 against our 30.2; LAMBADA perplexity is 38.1 against our 37.3; for Pythia-70M the published ARC-Easy is 37.4 against our 37.5; for SmolLM-135M the published HellaSwag is 41.2 against our 42.7 (normalised), within about a point and a half. LAMBADA accuracy differs more between sources (32.8, 33.0 and 38.9 for Pythia-160M; ours 35.4; Pythia-70M published 18.5, ours 22.7), as section 4 shows. So differences of a point or two on ARC and HellaSwag between our table and a paper are within the spread between published sources.
 
 ## 3. Bits per byte on the same held-out text (FACT)
 
 Bits per byte is a measure of how well a model predicts a text, independent of the tokenizer, so models with different vocabularies can be compared on one fixed text. Lower is better.
 
-**Text.** 234 documents from the held-out part of our validation file (a held-out part of the FineWeb-Edu sample that no model of ours trained on). The documents come from a region of that file that our own training-time validation does not use. Each document is cut to its first 3,500 characters, which gives 821,698 bytes in total. The brief was for 500 documents; only 234 qualified, and all 234 were used.
+**Text.** 234 documents from the held-out part of our validation file (a held-out part of the FineWeb-Edu sample that no model of ours trained on). The documents come from a region of that file that our own training-time validation does not use. Each document is cut to its first 3,500 characters, which gives 821,698 bytes in total. The brief was for 500 documents; only 234 qualified (documents of at least 3,500 characters inside the chosen region of the validation file), and all 234 were used.
 
 **Scoring.** The same rule for every model: the text is preceded by the model's end-of-text token, the model's own tokenizer is used, sequences longer than 1,024 tokens are cut, the log-loss of every token of the text is summed (the end-of-text token only provides context), and bits per byte is that sum divided by ln 2 and by the number of bytes of the text covered. 32-bit arithmetic, one document at a time. A repeat run of GPT-2 small on 20 documents gave identical numbers. Two SmolLM documents were cut at 1,024 tokens; leaving them and the same documents out for all models changed no number by more than 0.002 and did not change the ranking.
 
@@ -106,10 +107,31 @@ Notes.
 3. **Where our model sits.** Our session-36 numbers lie inside the range of the published 124M to 162M models on HellaSwag (30.5 against 29 to 31) and ARC-Challenge (24.5 normalised against 18 to 25), slightly above it on ARC-Easy (46.4 against 40 to 45), below it on LAMBADA (26.8 against 33 to 39), and well below SmolLM and MobileLLM, which trained on 600 billion tokens or more.
 4. **The GPT-2 paper's LAMBADA numbers** (45.99 and 35.13) come from the paper's own evaluation setup and are not comparable with the 32.6 and 40.1 that the standard setup (and our script) gives for the same model.
 
-## 5. What the comparisons show, and what they do not
+## 5. At about the same number of training tokens (FACT)
+
+The comparisons above set our unfinished model against finished models that saw 160 to 320 times more tokens. Pythia's authors also published intermediate checkpoints, so we could compare at nearly the same token count: our session-40 snapshot (2.045 billion tokens) against the Pythia-160M and Pythia-70M checkpoints at step 1000 (1,000 steps of 2,097,152 tokens, 2.10 billion tokens). Same scripts, same questions, same 234 documents, 32-bit arithmetic, one run per model. The two checkpoints were downloaded from the public repository (935 MB). Re-running the final Pythia models through the same scripts reproduced every earlier number exactly (all 16 benchmark values and all 234 per-document losses), which is a check on the scripts.
+
+| Model | Training tokens | Optimizer steps | HellaSwag acc / norm | ARC-Easy acc / norm | ARC-Challenge acc / norm | LAMBADA acc | LAMBADA perplexity | Bits per byte (95% interval) |
+|---|---|---|---|---|---|---|---|---|
+| **Ours, session 40** | 2.05 billion | 62,420 | 28.5 / 30.8 | 45.2 / 42.0 | 21.5 / 26.3 | 25.5 | 84.8 | **1.077** (1.058 to 1.098) |
+| **Pythia-160M, step 1000** | 2.10 billion | 1,000 | 26.4 / 26.5 | 30.6 / 28.6 | 18.7 / 21.5 | 6.5 | 2,591.7 | 1.376 (1.356 to 1.397) |
+| **Pythia-70M, step 1000** | 2.10 billion | 1,000 | 25.8 / 25.9 | 30.9 / 30.1 | 17.0 / 20.6 | 5.0 | 4,465.3 | 1.398 (1.378 to 1.419) |
+| Pythia-160M, final (for context) | about 300 billion | 143,000 | 28.4 / 30.2 | 43.6 / 40.1 | 19.5 / 23.5 | 35.4 | 37.3 | 0.982 (0.966 to 1.001) |
+| Pythia-70M, final (for context) | about 300 billion | 143,000 | 26.7 / 27.5 | 37.5 / 35.2 | 17.5 / 21.3 | 22.7 | 131.0 | 1.113 (1.096 to 1.133) |
+
+The paired difference in bits per byte between our snapshot and Pythia-160M at step 1000 is 0.298 (95% interval 0.291 to 0.306), and 0.320 for Pythia-70M. Chance is 25 percent on the four-choice tests, so the step-1000 checkpoints are at or only slightly above chance on HellaSwag. Our session-36 snapshot (section 3) and session 40 differ by 0.003 bits per byte on this text, the same size as our trainer's own change between them (0.0033).
+
+**Reading (FACT for the numbers, GUESS for the interpretation).**
+
+1. **At the same number of tokens our model is far ahead:** 0.30 bits per byte better on held-out web text, and higher on every benchmark column.
+2. **This is not evidence that our recipe beats the standard one.** (a) The data differ: the evaluation text is in our training family and not in the Pile that Pythia trained on. (b) Step 1000 is inside the warm-up of Pythia's schedule (warm-up over 1 percent of 143,000 iterations, 1,430 steps, peak learning rate 6e-4, cosine decay: PUBLISHED, from the configuration file of the 160M model as quoted by a page-reading tool, not opened by hand), so these are not annealed models and not models planned for a 2-billion-token budget. (c) The batch differs by a factor of 64 (32,768 against 2,097,152 tokens per step), so for the same tokens we took 62 times as many optimizer steps. GUESS: small batches use tokens more efficiently, and this may be a large part of the gap; it is one of the real differences between our recipe and the standard one, but here it cannot be separated from the data and the schedule.
+3. **The finished Pythia models still beat us on held-out text by about 0.1 bits per byte** (0.982 against 1.077), with 150 times more tokens.
+
+## 6. What the comparisons show, and what they do not
 
 **They show:**
 - Where an unfinished 143M model trained on 1.85 billion tokens stands: level with GPT-2 small and Pythia-160M on three standard small-model tests and 0.1 bits per byte behind them on held-out web text, above Pythia-70M, and far from SmolLM-135M.
+- That at about 2 billion tokens it is far ahead of Pythia's own unannealed checkpoints on this text, for reasons (data, warm-up, batch size) that cannot be separated here.
 - That HellaSwag, ARC-Easy and LAMBADA scores rise steadily with tokens (session 11, 20, 36), without the cooldown.
 - That a model with 160 times fewer training tokens than Pythia-160M can match it on several tests. GUESS: much of this comes from the quality and educational slant of the data (FineWeb-Edu is filtered for educational content, which should help science-question tests such as ARC), not from our recipe.
 
@@ -123,7 +145,7 @@ Notes.
 
 1. How does the model compare at the end of the planned run (9 billion tokens, after the cooldown)? This page's comparison is to be rerun then.
 2. What does a standard recipe (AdamW, cosine schedule, large batches) score on our data at the same 1.85 billion tokens? This needs a second training run and would separate the recipe from the data.
-3. How do Pythia's public intermediate checkpoints, at the same number of tokens as ours (about 2 billion), compare? Not run.
+3. Is the gap to Pythia's checkpoints at equal tokens (section 5) a data effect, a warm-up effect or a batch-size effect? Separating them needs a Pythia-style run on our data at a matched schedule, and a run of ours with a large batch.
 4. How much of SmolLM-135M's advantage on our text is overlap with its training data? A page-overlap check would answer it.
 
 ## Sources
@@ -140,3 +162,4 @@ All PUBLISHED, opened by us unless marked.
 8. Ben Allal, Lozhkov and Bakouch 2024, Hugging Face blog "SmolLM" (16 July 2024): 600 billion tokens for the 135M model; corpus parts of 220, 28 and 4 billion tokens.
 9. Hoffmann et al. 2022, "Training Compute-Optimal Large Language Models", arXiv 2203.15556.
 10. Zellers et al. 2019 (HellaSwag, arXiv 1905.07830); Clark et al. 2018 (ARC, arXiv 1803.05457); Paperno et al. 2016 (LAMBADA, arXiv 1606.06031).
+11. EleutherAI, public configuration file of the Pythia-160M training run (warm-up 0.01, 143,000 iterations, cosine decay, peak learning rate 6e-4), in the Pythia repository on GitHub; values as quoted by a page-reading tool. The Pythia intermediate checkpoints (revision step1000 of the 160M and 70M repositories) are on Hugging Face.

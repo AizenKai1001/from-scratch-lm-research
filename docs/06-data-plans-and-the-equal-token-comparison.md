@@ -2,7 +2,7 @@
 
 ## Summary
 
-From the start of training on 29 October 2026, two data plans ran side by side on the 143-million-parameter model. Plan B, mostly educational web text, ran on the main run (chain 1), and plan A, a repeated pool of six corpora read in file order, ran on a comparison run (chain 2). At equal tokens plan A was better on eight of nine evaluation sets and worse on the old validation set, whose text belongs to plan B's family. Before any data for a new plan had been read, the project wrote down retention ratios with a threshold of 0.4, and on the evening of 29 October it moved the main run to a third plan, C70: about 70 percent of each session from the broad pool (in a fixed random slice order) plus about 30 percent fresh text. A check on 30 October pooled four token-matched pairs; both retention ratios came out above 0.4, so the main run kept C70, and the cost was a later headline comparison, because the comparison run was paused. These are one-run-per-plan results at about 1.05 to 1.20 billion tokens of a 9-billion-token plan, and they say nothing yet about the final cooled models.
+From the start of training on 29 October 2026, two data plans ran side by side on the 143-million-parameter model. Plan B, mostly educational web text, ran on the main run (chain 1), and plan A, a repeated pool of six corpora read in file order, ran on a comparison run (chain 2). At equal tokens plan A was better on eight of nine evaluation sets and worse on the old validation set, whose text belongs to plan B's family. Before any data for a new plan had been read, the project wrote down retention ratios with a threshold of 0.4, and on the evening of 29 October it moved the main run to a third plan, C70: about 70 percent of each session from the broad pool (in a fixed random slice order) plus about 30 percent fresh text. A check on 30 October pooled four token-matched pairs; both retention ratios came out above 0.4, so the main run kept C70, and the cost was a later headline comparison, because the comparison run was paused. Each plan has one run: the first comparison was at about 0.6 billion tokens and the pooled check at 1.05 to 1.20 billion, of a 9-billion-token plan, and these results and they say nothing yet about the final cooled models.
 
 ## Scope, labels and setting
 
@@ -96,7 +96,7 @@ Labels: the values are FACT. The margins below are DERIVED from them.
 
 - Both ratios are above 0.4, so the literal rule and the proposed reading both say keep C70 (FACT). The decision record of 30 October keeps the main run on C70 with no change (FACT).
 - Both predicted intervals contained the result: -0.0326 is inside -0.070 to -0.010, and +0.0426 is inside -0.01 to +0.09 (DERIVED).
-- The margins are small against the spread across pairs. The old-validation result is about 0.0054 nats past the r_F line, about 0.6 of the spread error. The breadth result is about 0.024 nats short of the r_B line, about 1.4 spread errors.
+- The margins are small against the spread across pairs. The old-validation result is about 0.0054 nats past the r_F line, about 0.6 of the spread error. The breadth result is about 0.024 nats on the passing side of the r_B line, about 1.4 spread errors.
 - The breadth gap fell from +0.091 to +0.015 across the four pairs, with one flat step between the second and third (FACT). Whether it keeps falling is not known, because the comparison run was paused.
 
 ## What was given up
@@ -123,7 +123,7 @@ Labels: the values are FACT. The margins below are DERIVED from them.
 
 ## Open questions
 
-1. Does the breadth gap keep falling as the comparison run reads later sources? (GUESS: probably slowly. The paused run has no data after session 26.)
+1. Does the breadth gap keep falling as the comparison run reads later sources? (GUESS: probably slowly. The pooled check used no comparison-run data after session 26.)
 2. How does C70 rank against plan A once both are cooled at 9 billion tokens? (Not measured.)
 3. Would a plan-A run with shuffled slices, at the same decay, separate the order effect from the repetition effect? (GUESS: this is the test the design points to; it has not been run.)
 4. If the comparison run is resumed, do its later sessions change the headline result? (Open. The one check so far showed no lift when the run passed the old educational block.)
