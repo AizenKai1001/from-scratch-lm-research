@@ -48,7 +48,7 @@ Claims are written down with their setting, rules for deciding are written befor
 ### 3.5 Quizzes as a thermometer, not a teacher (document 08)
 
 **Idea.** A separate check, such as cloze questions scored by which option the model finds most likely, can tell us whether the model is getting better or worse while it learns on its own, without feeding the answers back (which would interfere with its learning). If it collapses, the reader returns to the last good checkpoint and does nothing else.
-**FACT.** A first version of the quiz measurement was run on two novels (document 08, section 9). The unchanged model already answers 81 to 90 percent of the items, and reading the book did not change that beyond noise, so this quiz is too easy to work as the thermometer. A harder version is the next step.
+**FACT.** A first version of the quiz measurement was run on two novels (document 08, section 9). The unchanged model already answers 81 to 90 percent of the items, and reading the book did not change that beyond noise, so this quiz is too easy to work as the thermometer. A second, harder quiz found a small extra gain in confidence on the part of the book that had been read (+0.4 nats, interval above zero) but no clear gain in accuracy: inconclusive by our rule (document 08, section 9).
 
 ### 3.6 Brain and body
 
