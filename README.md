@@ -25,6 +25,7 @@ Research notes, tests, results and open questions from training a 143-million-pa
 | Can the model itself compress text, and what does its decoder cost? | [14 Compression with the model](docs/14-compression-with-the-model.md) |
 | Which small variants (ternary, spiking, looped, efficiency tricks) held up, and what did Countdown puzzle training do? | [15 Proxy screens and the Countdown lift](docs/15-proxy-screens-and-the-countdown-lift.md) |
 | Where is this going, and which parts of the end goal (always learning, repairing itself, hidden thinking, small enough to run anywhere) exist yet? | [16 Vision and roadmap](docs/16-vision-and-roadmap.md) |
+| Which next ideas look worth testing, and what could each do for us? | [17 Candidate ideas and what they could do](docs/17-candidate-ideas-and-what-they-could-do.md) |
 
 ## Results at a glance
 
@@ -86,6 +87,7 @@ What held up against a control or against a prediction that could have failed: t
 | 14 | [Compression with the model](docs/14-compression-with-the-model.md) | The language model as a lossless compressor: measured sizes and speeds, the decoder-size problem, break-even estimates and limits |
 | 15 | [Proxy screens and the Countdown lift](docs/15-proxy-screens-and-the-countdown-lift.md) | Ternary, spiking and looped variants, the efficiency-trick screen on two kinds of hardware, and the Countdown puzzle fine-tune with its replay check |
 | 16 | [Vision and roadmap](docs/16-vision-and-roadmap.md) | The end goal (an always-learning, self-repairing, small model), what exists and what is only a plan, the hard problems, and the order of the next tests |
+| 17 | [Candidate ideas and what they could do](docs/17-candidate-ideas-and-what-they-could-do.md) | Compression, learning-without-forgetting, model and safety ideas from a broad review, each with what it could give, its cost and its first test; all untested guesses unless a row points to a measured document |
 
 ## How to read the labels
 
