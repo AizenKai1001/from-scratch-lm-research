@@ -22,7 +22,7 @@ A small language model whose brain is never switched off:
 |---|---|---|
 | Learning while reading | one small update after each stretch, replay of surprising stretches | FACT: a model that read a book learned it and kept it against a control (documents 08 and 12) |
 | Not forgetting | mix old material into new training; consolidate during sleep | FACT: mixing 20 percent ordinary text into a puzzle fine-tune kept normal-text quality (1.0773 against 1.0817 bits per byte) where pure puzzle training lost 5.4 percent (document 15). GUESS: this scales to continuous learning |
-| Repair instead of rollback | a health monitor with held-out skill probes and targeted replay | FACT: on a toy with two skills, repair kept both (100 percent each) where rollback lost the new skill (35 percent). It also flipped between "dropped" and "repaired" too often, so it needs damping. A later code review found the toy's test examples were all also in its training set (only nine possible examples per skill), so it shows retention of memorised cases, not generalisation. Not yet tested on a real model |
+| Repair instead of rollback | a health monitor with held-out skill probes and targeted replay | FACT (toy): repair kept both skills where rollback lost the new one, but the toy's test examples were also in its training set, so it shows retention of memorised cases only. FACT (real model, document 18): a monitor-driven repair as first built barely learned the new skill (2 to 16 percent recall), and rollback learned nothing (0 percent). A different design, learning first and then a short healing phase that is mostly rehearsal, learned the new skill (99 to 100 percent) and kept the old skills near their starting values, for 3 to 12 new skills in a row on one or two seeds. The new skills were memorised facts, not reasoning |
 | Sleep and consolidation | a fast adapter learns while awake; sleep distils it into the base and empties it | FACT: on a toy the adapters were emptied again and both facts were still recalled. The toy is too easy to prove anything. GUESS for real models |
 | Hidden thinking | silent latent steps plus a small private scratch memory; answers accepted only when an exact checker agrees | GUESS. Needs a base model that can already do something checkable. The Countdown puzzle task (document 15) is now above the minimum bar for starting this |
 | Reading the hidden thinking | lens viewers | FACT: a viewer exists; its lens readouts are not yet reliable (split-half agreement 0.34 and 0.55 against a pass bar of 0.8) |
@@ -32,7 +32,7 @@ A small language model whose brain is never switched off:
 | Long memory on a card or disk | spill old key and value blocks to storage, keep a small hot part in fast memory | GUESS. A design and a benchmark are drafted; nothing measured on real storage |
 | Per-user tailoring | a bounded per-user adapter on a frozen shared base | GUESS. Not built |
 | Self-improving code | an automated propose-test-keep loop | PARTIAL: our process already works this way with written-down-first rules, but a human approves every change to the production model |
-| Eyes, ears, voice, imagination | small frozen encoders connected to the same brain | GUESS. Not started |
+| Eyes, ears, voice, imagination | small encoders, built from scratch, connected to the same brain | FACT (document 19): a 2.24-million-parameter image model reached 90.4 and 90.1 percent on CIFAR-10 on two seeds, and a small bridge let the frozen language model name the pictured class 90.5 percent of the time with its text behaviour unchanged. The ears are training; the voice and imagination are not started |
 
 ## Hard problems we expect
 
@@ -45,7 +45,7 @@ A small language model whose brain is never switched off:
 
 ## The order we plan to test
 
-1. Repair versus rollback on a real model (damped repair, several skills).
+1. Repair versus rollback on a real model (done at small scale for memorised facts, document 18; next: a skill that needs reasoning, and a larger model).
 2. A sleep phase for the reading model, against plain replay.
 3. A byte-level model against the word-piece model, using compressed size as the score.
 4. Hidden thinking with an exact checker on Countdown, with the lens as the viewer.

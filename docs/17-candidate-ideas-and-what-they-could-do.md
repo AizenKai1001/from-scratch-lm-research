@@ -24,7 +24,7 @@ Each entry says what the idea is, what it could do for us if it works, what it w
 | Anchor updates to the original model | A hard limit on how far the model can drift | May slow real learning | Compare drift and new-skill gain with and without the anchor |
 | A small fast-learning memory that sleep folds into the permanent weights | Memory in the weights without a growing context | The folding step could lose information | A two-book test: wake-only against replay against sleep |
 | A per-user adapter on a frozen shared model, with a different user's adapter as a control | Tailoring to each user in the weights | Needs proof that the gain is really about that user | A synthetic-user test with a wrong-user control |
-| Repair a lost skill by targeted replay instead of restoring an old copy | Keeps new learning when something gets worse | Could flip back and forth without damping | Real-model test of repair against rollback (planned) |
+| Repair a lost skill by targeted replay instead of restoring an old copy | Keeps new learning when something gets worse | Could flip back and forth without damping | Done for memorised facts (document 18); next, a skill that needs reasoning |
 
 ## C. Model and training ideas
 

@@ -59,3 +59,14 @@ The open questions of each study are listed at the end of its document. The comm
 
 - How many independent seeds does a production-scale result need before a 0.01 bits-per-byte difference should be believed?
 - How independent can an AI reviewer be of the AI that wrote the experiment?
+
+## Learning new skills without forgetting, and the senses (documents 18 and 19)
+
+| Question | What would settle it | Cost |
+|---|---|---|
+| Does learn-then-heal work when the new skill needs reasoning, not memorised facts? | The same method on a real task (for example a second puzzle type), with the same written-first rules | cheap to moderate |
+| Does it hold at larger model sizes, and with many more than twelve skills? | The same chain at another size; a longer chain (a 24-skill run is under way) | moderate to expensive |
+| Can the slow creep of text loss per skill be stopped, not just halved? | Lower learning rates with more learning steps; a periodic consolidation step | cheap |
+| How much old material must be kept for rehearsal as skills accumulate? | A chain with a fixed small store of examples that is replaced as it fills | cheap |
+| Do the senses (ears, voice, imagination) reach a useful quality when built from scratch at this size? | The written-first tests in document 19 | moderate |
+| Are separate senses or one shared token vocabulary (or specialist parts chosen by a router) better at equal total size? | The merge test planned after each sense works alone | moderate |

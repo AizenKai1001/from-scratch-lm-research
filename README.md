@@ -26,6 +26,8 @@ Research notes, tests, results and open questions from training a 143-million-pa
 | Which small variants (ternary, spiking, looped, efficiency tricks) held up, and what did Countdown puzzle training do? | [15 Proxy screens and the Countdown lift](docs/15-proxy-screens-and-the-countdown-lift.md) |
 | Where is this going, and which parts of the end goal (always learning, repairing itself, hidden thinking, small enough to run anywhere) exist yet? | [16 Vision and roadmap](docs/16-vision-and-roadmap.md) |
 | Which next ideas look worth testing, and what could each do for us? | [17 Candidate ideas and what they could do](docs/17-candidate-ideas-and-what-they-could-do.md) |
+| Can the model learn new skills in a row without forgetting old ones (repair or rollback, and what works)? | [18 Learning new skills without forgetting](docs/18-learning-new-skills-without-forgetting.md) |
+| Have the senses (eyes, ears) been built from scratch, and can the language model use them? | [19 First senses, built from scratch](docs/19-first-senses-built-from-scratch.md) |
 
 ## Results at a glance
 
@@ -58,6 +60,9 @@ What held up against a control or against a prediction that could have failed: t
 | Ternary weights at 24 million tokens: all three seeds lower than normal weights, mean -0.010 (the rule's bar is -0.005). At 12 million tokens they were level or slightly worse | Proxy about 21.5M parameters, three seeds | measured; the rule reads it as slightly better | [15](docs/15-proxy-screens-and-the-countdown-lift.md) |
 | An extra next-token prediction head is lower on all four seeds (mean -0.047), but takes about 1.5 times as long per run. The other six efficiency tricks did not clear the written rules | 12M tokens, two kinds of hardware, seeds 1, 3, 5, 7 | measured; fails the speed condition | [15](docs/15-proxy-screens-and-the-countdown-lift.md) |
 | A copy fine-tuned on programmatic Countdown puzzles solved 48.2 percent in 64 tries (base 0 of 500), but normal-text loss rose from 1.0817 to 1.1403; mixing 20 percent ordinary text kept it at 1.0773 with 41 of 100 puzzles | Copy of the base, 800 steps, held-out number sets excluded | measured; same format as training, not general reasoning | [15](docs/15-proxy-screens-and-the-countdown-lift.md) |
+| Adding a new skill (100 memorised facts) to the model: unprotected training learned it (100%) but damaged old skills (text loss 3.54 to 4.06-4.27); rollback kept old skills but never learned it (0%); learn-then-heal (120 learning steps, then 80 healing steps that are mostly rehearsal) learned it (99-100%) and kept text loss within 0.05 of rollback. On 320 Countdown puzzles it matched rollback (12.8% against 12.3%, two seeds pooled) | 143M model, seeds 777, 778, 779; re-score of 640 attempts | measured; the new skill is memorisation | [18](docs/18-learning-new-skills-without-forgetting.md) |
+| Many new skills in a row: with about 90% of the healing batch rehearsing earlier facts, 6 skills were kept at 88-94% recall on three seeds and 12 skills at 85% (weakest set) on two seeds; with 25% rehearsal the weakest set fell to 40%; unprotected training lost the earliest skills almost completely. Halving both learning rates cut the drift of text loss in the 12-skill chain from +0.33 to +0.13 on one seed (and on a second seed), without hurting learning; a quarter of the rate under-learned | 143M model, 1 to 3 seeds per arm, rules written first | measured; indicative | [18](docs/18-learning-new-skills-without-forgetting.md) |
+| A 2.24M-parameter image model built from scratch reached 90.4% and 90.1% on CIFAR-10 test pictures (two seeds, about 10 minutes each). A small bridge let the frozen language model name the pictured class 90.5% of the time, with its text behaviour exactly unchanged | 143M language model, frozen; one bridge seed | measured; first sense, narrow test | [19](docs/19-first-senses-built-from-scratch.md) |
 
 ## What is not shown
 
@@ -65,6 +70,7 @@ What held up against a control or against a prediction that could have failed: t
 - That learning while reading is a safe, lasting improvement: it was measured over books of 120,000 tokens, with a slow drift on other text. Weeks of continuous reading are untested.
 - That a lower loss means the model has learned what the text says (the first quiz could not tell).
 - That anything here holds at larger model sizes. Most tests are one run on a 4.5M or 143M model.
+- That learning without forgetting works for skills that need reasoning, or at larger sizes: the new skills in document 18 were memorised facts on one model size.
 - Independent verification: the experiments and the writing were done with an AI assistant and checked by further AI reviews. Nothing has been peer reviewed.
 
 ## The documents
@@ -88,6 +94,8 @@ What held up against a control or against a prediction that could have failed: t
 | 15 | [Proxy screens and the Countdown lift](docs/15-proxy-screens-and-the-countdown-lift.md) | Ternary, spiking and looped variants, the efficiency-trick screen on two kinds of hardware, and the Countdown puzzle fine-tune with its replay check |
 | 16 | [Vision and roadmap](docs/16-vision-and-roadmap.md) | The end goal (an always-learning, self-repairing, small model), what exists and what is only a plan, the hard problems, and the order of the next tests |
 | 17 | [Candidate ideas and what they could do](docs/17-candidate-ideas-and-what-they-could-do.md) | Compression, learning-without-forgetting, model and safety ideas from a broad review, each with what it could give, its cost and its first test; all untested guesses unless a row points to a measured document |
+| 18 | [Learning new skills without forgetting](docs/18-learning-new-skills-without-forgetting.md) | Repair, rollback and learn-then-heal on a real model: one new skill, three, six and twelve in a row, the healing batch mix, the learning-rate halving and its limits |
+| 19 | [First senses, built from scratch](docs/19-first-senses-built-from-scratch.md) | A tiny image model built from scratch, the bridge that lets the frozen language model read what it sees, the ears in progress and the open design questions |
 
 ## How to read the labels
 

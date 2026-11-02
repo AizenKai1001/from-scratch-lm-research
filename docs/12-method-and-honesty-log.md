@@ -79,3 +79,13 @@ Snapshot dated 2 November 2026. These are the method changes and failures from d
 - **An unrelated overnight freeze.** The home server froze for several hours on 1 to 2 November and had to be power-cycled. It happened after the finished comparison runs and lost no results, and it is unrelated to the 30-million-token failure above.
 - **An invalid arm.** The weight-averaging arm gave results identical to the base on every seed. The script never evaluated the averaged weights in that setup, so the arm is marked INVALID and is not evidence either way.
 - **Single runs labelled.** A number from one run is labelled as one run in the text. The seed-1 comparison of spiking and looped layers at 24 million tokens is an indication only, and the Countdown replay result covers 100 puzzles rather than 500.
+
+## Changes and failures: learning without forgetting and the senses
+
+Snapshot dated 2 November 2026. These are the method points from documents 18 and 19.
+
+- **Early repair-versus-rollback tests were uninformative, and why.** The first "new skill" was two-digit addition. The tokenizer stores every number from 0 to 100 as one token, so the model could only memorise the answers; and the first scoring sampled answers instead of reading the most likely one. Both were found by reading the code and the tokenizer, and the new skill was replaced by recall of 100 arbitrary facts. The rules were rewritten before the new runs.
+- **A cloud-cost estimate was wrong by about three times.** A batch of six rented-GPU jobs cost roughly 9 USD against an estimate of 3. The lesson recorded: compute cost as seconds of GPU time times the price before launching, and put a hard time limit on every job.
+- **Verdicts are applied literally, and near-misses are reported as such.** The learn-then-heal method missed its written Countdown condition by one puzzle on two seeds out of three. We reported it as mixed, did not loosen the rule, and ran a larger re-score of the saved models with a new rule written first; that re-score passed.
+- **A watcher script bug.** Several times a monitoring script reported that a run had finished when it had just started, because it checked for the wrong process name. No results were affected: each time the run was checked by hand and the watcher fixed.
+- **Single seeds labelled.** The 25-percent rehearsal, the weakest-set rehearsal, the extra-text-slot and quartered-learning-rate runs are single seeds. The image model and the bridge are one or two seeds. All are indications only.
