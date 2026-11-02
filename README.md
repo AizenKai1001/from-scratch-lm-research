@@ -2,7 +2,7 @@
 
 Research notes, tests, results and open questions from training a 143-million-parameter language model from scratch on two consumer graphics cards, and from experiments on a model that keeps learning while it reads.
 
-**This repository contains documentation only: no code, no data and no model weights.** Status of the numbers: 31 October 2026. The work is still running, so everything here is a snapshot, and each document says what a number was measured on.
+**This repository contains documentation only: no code, no data and no model weights.** Status of the numbers: 2 November 2026. The work is still running, so everything here is a snapshot, and each document says what a number was measured on.
 
 ## What the project is
 
@@ -22,6 +22,9 @@ Research notes, tests, results and open questions from training a 143-million-pa
 | What is still open? | [11 Open questions](docs/11-open-questions.md) |
 | How much should you trust any of it? | [12 Method and honesty log](docs/12-method-and-honesty-log.md) |
 | Can the reader be given a drive, and which rewards beyond next-word prediction are worth testing? | [13 Drive layer and reward research](docs/13-drive-layer-and-reward-research.md) |
+| Can the model itself compress text, and what does its decoder cost? | [14 Compression with the model](docs/14-compression-with-the-model.md) |
+| Which small variants (ternary, spiking, looped, efficiency tricks) held up, and what did Countdown puzzle training do? | [15 Proxy screens and the Countdown lift](docs/15-proxy-screens-and-the-countdown-lift.md) |
+| Where is this going, and which parts of the end goal (always learning, repairing itself, hidden thinking, small enough to run anywhere) exist yet? | [16 Vision and roadmap](docs/16-vision-and-roadmap.md) |
 
 ## Results at a glance
 
@@ -49,6 +52,11 @@ What held up against a control or against a prediction that could have failed: t
 | Reading with replay, as one loop: stable over three bursts on validation text (zero rollbacks), and over 22 bursts (about 130,000 segments, one pass) on a private collection of web novels and song lyrics. Replay alone moved the canary more than the loop did; reading's gain showed only on the text just read. On the parts of each book never read, the gains were +4.1 to +17.4 percent (the lyrics -0.9 percent) | One 143M copy; one seed; the replay-only control for the long run was still running | measured; the long-run gains are a hint, not a result | [08](docs/08-learning-while-reading.md) |
 | Four designs for an implanted drive (a chooser, a standing inner-voice prefix, drive text in the reading stream, a steering vector) were killed or inconclusive. The best one, steering, gave +0.32 nats but moved the canary by 1.4 percent, above its limit | Matched controls in every arm; rules written first | measured; killed or inconclusive by the rules | [13](docs/13-drive-layer-and-reward-research.md) |
 | Verifiable-reward reinforcement learning and other reward ideas: most evidence is at 1.5 billion parameters and above. The planned tests at 143M have written pass and kill rules | Literature review in two passes | published evidence; tests open, none run | [13](docs/13-drive-layer-and-reward-research.md) |
+| The model as a lossless compressor: 2.29 MB of held-out text coded to 314,132 bytes, against 692,138 (bzip2) and 696,600 (xz), with an exact decode check. The model's 286 MB decoder is not counted | 143M session-92 checkpoint, one run, precision 2^20 | measured, one run | [14](docs/14-compression-with-the-model.md) |
+| Rounding the weights after training: 6 bits (108 MB) costs about 0.019 bits per byte; 4 bits and below collapse without retraining | Post-training rounding, 923 KB held-out text | measured, one run | [14](docs/14-compression-with-the-model.md) |
+| Ternary weights at 24 million tokens: all three seeds lower than normal weights, mean -0.010 (the rule's bar is -0.005). At 12 million tokens they were level or slightly worse | Proxy about 21.5M parameters, three seeds | measured; the rule reads it as slightly better | [15](docs/15-proxy-screens-and-the-countdown-lift.md) |
+| An extra next-token prediction head is lower on all four seeds (mean -0.047), but takes about 1.5 times as long per run. The other six efficiency tricks did not clear the written rules | 12M tokens, two kinds of hardware, seeds 1, 3, 5, 7 | measured; fails the speed condition | [15](docs/15-proxy-screens-and-the-countdown-lift.md) |
+| A copy fine-tuned on programmatic Countdown puzzles solved 48.2 percent in 64 tries (base 0 of 500), but normal-text loss rose from 1.0817 to 1.1403; mixing 20 percent ordinary text kept it at 1.0773 with 41 of 100 puzzles | Copy of the base, 800 steps, held-out number sets excluded | measured; same format as training, not general reasoning | [15](docs/15-proxy-screens-and-the-countdown-lift.md) |
 
 ## What is not shown
 
@@ -75,6 +83,9 @@ What held up against a control or against a prediction that could have failed: t
 | 11 | [Open questions](docs/11-open-questions.md) | What we do not know, what would settle it and roughly what it costs |
 | 12 | [Method and honesty log](docs/12-method-and-honesty-log.md) | How the experiments are run, the claims we had to correct, tooling errors, predictions against outcomes, rules adopted on 31 October |
 | 13 | [Drive layer and reward research](docs/13-drive-layer-and-reward-research.md) | The four implanted-drive designs and their numbers, and the literature on rewards beyond next-word prediction with the planned tests and their rules |
+| 14 | [Compression with the model](docs/14-compression-with-the-model.md) | The language model as a lossless compressor: measured sizes and speeds, the decoder-size problem, break-even estimates and limits |
+| 15 | [Proxy screens and the Countdown lift](docs/15-proxy-screens-and-the-countdown-lift.md) | Ternary, spiking and looped variants, the efficiency-trick screen on two kinds of hardware, and the Countdown puzzle fine-tune with its replay check |
+| 16 | [Vision and roadmap](docs/16-vision-and-roadmap.md) | The end goal (an always-learning, self-repairing, small model), what exists and what is only a plan, the hard problems, and the order of the next tests |
 
 ## How to read the labels
 

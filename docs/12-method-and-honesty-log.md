@@ -69,3 +69,13 @@ These are rules for new rule files. They are adopted but not yet tested on our o
 
 - How many independent seeds does a production-scale result need before we should trust a 0.01 bits-per-byte difference?
 - Can the separate-reviewer step be made independent enough (a different model, a different prompt style) to catch errors the first assistant is blind to?
+
+## Changes and failures since 31 October
+
+Snapshot dated 2 November 2026. These are the method changes and failures from documents 14 and 15.
+
+- **Rules written before the runs, with checksums.** Each new screen has a rule file with its pass and kill conditions written before its first run, and its SHA-256 checksum recorded: the ternary and spiking screen (checksum starting b5037439), the larger 24 and 30-million-token comparison (e3ce6a9a), the three-seed ternary check (bac03090), the efficiency-trick screen (c2583dd2), the replication on cloud T4 GPUs (b9579e1d), the equal-time test of the extra prediction head (d69154ac, not finished), and the two Countdown fine-tunes (3a43f8c2 and 7d9e4d05).
+- **Addenda written before results.** (1) The planned 30-million-token runs failed without a result: each was killed by a 1,000-second time limit that was too short (they need roughly 17 to 23 minutes). A dated note was added and a smaller 24-million-token set, with a 25-minute limit, was run instead. (2) For the equal-time test of the extra prediction head, a note was added after launch and before any result: on the home cards the head made a run about 1.7 times as long (11.3 against 6.7 minutes for a comparable run), more than the 1.5 times measured on the T4 GPUs, so the plain-network arm in that design gets slightly less than equal time, and a win would be reported with that handicap. (3) For the second Countdown fine-tune, the first launch ran out of GPU memory at step 0 with 96-token ordinary-text windows; it was rerun with 64-token windows, and the change was written into the rules first.
+- **An unrelated overnight freeze.** The home server froze for several hours on 1 to 2 November and had to be power-cycled. It happened after the finished comparison runs and lost no results, and it is unrelated to the 30-million-token failure above.
+- **An invalid arm.** The weight-averaging arm gave results identical to the base on every seed. The script never evaluated the averaged weights in that setup, so the arm is marked INVALID and is not evidence either way.
+- **Single runs labelled.** A number from one run is labelled as one run in the text. The seed-1 comparison of spiking and looped layers at 24 million tokens is an indication only, and the Countdown replay result covers 100 puzzles rather than 500.
