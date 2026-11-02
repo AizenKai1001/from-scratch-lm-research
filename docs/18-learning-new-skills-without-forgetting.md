@@ -89,7 +89,23 @@ Reading:
 
 - **Halving both learning rates cut the drift of the general skills by more than half** (text from +0.33 to +0.13, book from +0.24 to +0.09, on seed 778), with every new set still learned to 96 to 100 percent and the weakest earlier set equal or higher (85 percent on both seeds). Our guess is that the drift comes from the learning phases themselves, because a test that gave the healing batch two text examples instead of one made text loss worse (3.91) and cost recall, rather than better.
 - **There is a floor.** At a quarter of the original rate the first set was recalled only 78 percent (our rule asked for 90 percent), so the model under-learns. A lower rate with more learning steps was not tried.
-- **Text loss still creeps up with every skill** (about 0.01 per stage at the halved rate), so a long enough chain will eventually cross any fixed limit. A 24-skill run at the halved rate is under way as this snapshot is written; it is not reported here.
+- **Text loss still creeps up with every skill** (about 0.01 per stage at the halved rate), so a long enough chain will eventually cross any fixed limit. The 24-skill run below shows this.
+
+## 4. Twenty-four skills in a row
+
+One seed (779), halved learning rates, healing batch of one text, one Countdown and fourteen fact examples. When more than fourteen sets had been learned, the fourteen rehearsed facts rotated over the learned sets so that each set came up regularly.
+
+| After skill | Weakest earlier set | Text loss | Book loss |
+|---|---|---|---|
+| (start) | n/a | 3.543 | 3.211 |
+| 6th | 96% | 3.61 | 3.26 |
+| 12th | 81% | 3.66 | 3.31 |
+| 18th | 85% | 3.79 | 3.41 |
+| 24th | 80% | 3.81 | 3.46 |
+
+- **Verdict by the rule written first: pass.** All 24 sets are recalled at 80 percent or more after the last stage (weakest 80 percent, average about 88 percent), Countdown is 11.7 percent against a start of 10.2 percent, and every new set was learned to at least 97 percent in its own stage.
+- **Text and book loss are close to their limits.** Text rose by 0.27 against an allowed 0.30, and book by 0.24 against an allowed 0.25. A longer chain would cross them, as the 0.01-per-stage creep predicted. So 24 skills is about where this recipe stops fitting those limits, not evidence that it scales without bound.
+- **Limits.** One seed, memorised facts only, and each stage used 100 facts.
 
 ## What this does and does not show
 

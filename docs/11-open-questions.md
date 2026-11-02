@@ -65,7 +65,7 @@ The open questions of each study are listed at the end of its document. The comm
 | Question | What would settle it | Cost |
 |---|---|---|
 | Does learn-then-heal work when the new skill needs reasoning, not memorised facts? | The same method on a real task (for example a second puzzle type), with the same written-first rules | cheap to moderate |
-| Does it hold at larger model sizes, and with many more than twelve skills? | The same chain at another size; a longer chain (a 24-skill run is under way) | moderate to expensive |
+| Does it hold at larger model sizes, and with many more than twelve skills? | The same chain at another size; a chain longer than 24 (a 24-skill run passed, close to its limits) | moderate to expensive |
 | Can the slow creep of text loss per skill be stopped, not just halved? | Lower learning rates with more learning steps; a periodic consolidation step | cheap |
 | How much old material must be kept for rehearsal as skills accumulate? | A chain with a fixed small store of examples that is replaced as it fills | cheap |
 | Do the senses (ears, voice, imagination) reach a useful quality when built from scratch at this size? | The written-first tests in document 19 | moderate |

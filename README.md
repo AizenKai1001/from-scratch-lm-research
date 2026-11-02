@@ -95,7 +95,7 @@ What held up against a control or against a prediction that could have failed: t
 | 16 | [Vision and roadmap](docs/16-vision-and-roadmap.md) | The end goal (an always-learning, self-repairing, small model), what exists and what is only a plan, the hard problems, and the order of the next tests |
 | 17 | [Candidate ideas and what they could do](docs/17-candidate-ideas-and-what-they-could-do.md) | Compression, learning-without-forgetting, model and safety ideas from a broad review, each with what it could give, its cost and its first test; all untested guesses unless a row points to a measured document |
 | 18 | [Learning new skills without forgetting](docs/18-learning-new-skills-without-forgetting.md) | Repair, rollback and learn-then-heal on a real model: one new skill, three, six and twelve in a row, the healing batch mix, the learning-rate halving and its limits |
-| 19 | [First senses, built from scratch](docs/19-first-senses-built-from-scratch.md) | A tiny image model built from scratch, the bridge that lets the frozen language model read what it sees, the ears in progress and the open design questions |
+| 19 | [First senses, built from scratch](docs/19-first-senses-built-from-scratch.md) | A tiny image model built from scratch, the bridge that lets the frozen language model read what it sees, the ears (24.6 percent word error rate) and the open design questions |
 
 ## How to read the labels
 

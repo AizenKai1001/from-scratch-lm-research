@@ -25,9 +25,12 @@ The pass line, written first, was 90 percent in under an hour. Both seeds pass, 
 - **The language model's text behaviour was unchanged.** Before any training, we checked that with the bridge installed and nothing placed in the reserved positions, the model's outputs on a real text batch were exactly the same as before (largest difference 0.0, text loss identical to six digits), and it was still identical after the bridge was trained. This was a condition of the test: if it had failed, the run would have counted as void.
 - **Limits.** The answer is a choice among ten single words, not a free description. The bridge was trained with the labels. One seed. The language model cannot yet describe a picture in its own words.
 
-## 3. The ears: in progress
+## 3. The ears
 
-A small speech recogniser (about 7 million parameters, built the same way) is being trained from scratch on 100 hours of open, read English speech, with its pass line (a word error rate of 40 percent or lower on a held-out test set that is looked at only once, at the end) written down first. As this snapshot is written the run is not finished, and no result is reported here.
+**FACT.** A small speech recogniser (7.1 million parameters, a small convolutional front end feeding eight transformer blocks, trained with a standard alignment-free loss, no pretrained weights) was trained from scratch for 40 epochs on 100 hours of open, read English speech, in about 3 hours on a small consumer GPU. The pass line, written first, was a word error rate of 40 percent or lower on a held-out test set that is looked at only once, at the end.
+
+- **Result: word error rate 24.6 percent on the test set** (24.7 percent on the validation set used to pick the checkpoint). That passes the line. About three words in four are right.
+- **Limits.** One seed. No language model is used to clean up the output, which is plain greedy decoding. The speech is clean, read audiobook speech; noisy or spontaneous speech would be much worse. It is a first version, far from the best published results.
 
 ## 4. What is next, and the open design question
 
