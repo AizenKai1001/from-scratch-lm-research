@@ -1,6 +1,6 @@
 # 19. First senses, built from scratch
 
-Snapshot dated 2 November 2026. Document 16 lists a body for the model: eyes (vision), ears (speech recognition), a voice (speech synthesis) and an imagination (a small image generator). The project's rule is that each of these is built from scratch, the same way the language model was, with no pretrained weights in the finished part. This document reports the first two steps: a tiny image model, and a bridge that lets the language model read what it sees. Labels: **FACT** is measured in our own logged runs; **GUESS** is reasoning not yet tested. Each test had its pass and kill conditions written before it ran, and the verdicts apply them as written.
+Snapshot dated 2 November 2026. Document 16 lists a body for the model: eyes (vision), ears (speech recognition), a voice (speech synthesis) and an imagination (a small image generator). The project's rule is that each of these is built from scratch, the same way the language model was, with no pretrained weights in the finished part. This document reports the first steps: a tiny image model, a bridge that lets the language model read what it sees, a first speech recogniser, and a first imagination that draws from the language model's own state. Labels: **FACT** is measured in our own logged runs; **GUESS** is reasoning not yet tested. Each test had its pass and kill conditions written before it ran, and the verdicts apply them as written.
 
 ## The design in one paragraph
 
@@ -15,7 +15,7 @@ Each sense is its own small model, trained from scratch on open data, that turns
 | 1 | 90.4% | 627 s |
 | 2 | 90.1% | 624 s |
 
-The pass line, written first, was 90 percent in under an hour. Both seeds pass, with a margin of only 0.1 to 0.4 points, so the honest summary is that this model sits just around the line. It is a first version of an image model, far from the best published results for this data set.
+The pass line, written first, was 90 percent in under an hour. Both seeds pass, with a margin of only 0.1 to 0.4 points, so the honest summary is that this model sits at the line, within the roughly 0.6-point error of a 10,000-picture test. It is a first version of an image model, far from the best published results for this data set.
 
 ## 2. The bridge: the language model reads the picture
 
@@ -23,13 +23,13 @@ The pass line, written first, was 90 percent in under an hour. Both seeds pass, 
 
 - **Accuracy: 90.5 percent**, against a written pass line of 85 percent. The image model on its own scores 90.4 percent, so the language model reads the picture about as well as the image model's own classifier does.
 - **The language model's text behaviour was unchanged.** Before any training, we checked that with the bridge installed and nothing placed in the reserved positions, the model's outputs on a real text batch were exactly the same as before (largest difference 0.0, text loss identical to six digits), and it was still identical after the bridge was trained. This was a condition of the test: if it had failed, the run would have counted as void.
-- **Limits.** The answer is a choice among ten single words, not a free description. The bridge was trained with the labels. One seed. The language model cannot yet describe a picture in its own words.
+- **Limits.** A control with no language model (the same bridge feeding a plain classifier) was not run, so this shows that the language model can read the picture, not that it adds anything beyond the image model. The answer is a choice among ten single words, not a free description. The bridge was trained with the labels. One seed. The language model cannot yet describe a picture in its own words.
 
 ## 3. The ears
 
 **FACT.** A small speech recogniser (7.1 million parameters, a small convolutional front end feeding eight transformer blocks, trained with a standard alignment-free loss, no pretrained weights) was trained from scratch for 40 epochs on 100 hours of open, read English speech, in about 3 hours on a small consumer GPU. The pass line, written first, was a word error rate of 40 percent or lower on a held-out test set that is looked at only once, at the end.
 
-- **Result: word error rate 24.6 percent on the test set** (24.7 percent on the validation set used to pick the checkpoint). That passes the line. About three words in four are right.
+- **Result: word error rate 24.6 percent on the test set** (24.7 percent on the validation set used to pick the checkpoint). That passes the line. About three words in four are right (word error rate also counts inserted words).
 - **Limits.** One seed. No language model is used to clean up the output, which is plain greedy decoding. The speech is clean, read audiobook speech; noisy or spontaneous speech would be much worse. It is a first version, far from the best published results.
 
 ## 3b. The imagination, first version: pictures from the brain's own thoughts
@@ -42,7 +42,21 @@ The pass line, written first, was 90 percent in under an hour. Both seeds pass, 
 | Descriptions that never name the object, for example "it purrs, curls up on the sofa" (1,800 pictures) | 46.7% | none (report only) |
 | Unrelated sentences (weather, homework): share of the most common judged object | 23.8% | none (should not collapse to one object) |
 
-Verdict by the rule written first: **pass**. Cars, horses, ships and frogs are clearly recognisable in the sample grid; planes and birds are the weakest. The descriptive result is the more interesting one for the goal: the language model's own state carries enough meaning that a description with no object word still produces the right kind of picture almost half the time. Limits: 32 by 32 pictures, ten objects, templated sentences, one seed. It is a still image per sentence, not a continuous live stream, and it does not yet follow a topic change within a conversation or use reference pictures. Those are the next tests.
+Verdict by the rule written first: **pass**. Cars, horses, ships and frogs are clearly recognisable in the sample grid; planes and birds are the weakest. The descriptive result is the more interesting one for the goal: with templated and hand-written descriptions, the language model's own state still carries enough meaning that a description with no object word produces the right kind of picture almost half the time. The judge itself is right only about 90 percent of the time on real pictures, which bounds what these numbers can show. Limits: 32 by 32 pictures, ten objects, templated sentences, one seed. It is a still image per sentence, not a continuous live stream, and it does not yet use reference pictures.
+
+**Following a change of topic (FACT, one seed each).** Next the imagination was tested on invented conversations of six sentences: three about one object, then three about another, with the brain reading the whole conversation so far. The written pass line was: at least 70 percent right after sentence 3, at least 60 percent right after the first new-topic sentence, and at least 70 percent after sentence 6. The first attempts failed, and the failures are part of the result.
+
+| Version | Sentences 1 to 3 | Sentences 4 to 6 (after the switch) | Verdict by the written rule |
+|---|---|---|---|
+| Trained on single sentences only | 88, 73, 78 percent | 31, 34, 34 percent | fail (24 percent of the first new-topic pictures still showed the old object) |
+| Continued training on conversations with 0 to 4 earlier sentences | 92, 74, 73 | 86, 68, 56 | fail (switches at once, then fades) |
+| Training conversations built as topic runs | 96, 83, 86 | 79, 74, 68 | fail by 2 points |
+| Same, a little longer with longer runs | 94, 86, 86 | 84, 79, 73 | pass, but tuned on these same test conversations |
+| The last version on 100 fresh conversations nothing was tuned on | 90, 91, 88 | 78, 80, 79 | **pass** |
+
+So the clean result is the last row. Reading each sentence alone, with no earlier context, gives about 88 to 93 percent, so a gap to the single-sentence level remains. Limits: each tuning step used the same first set of test conversations, one seed, templated sentences, ten objects, 32 by 32 pictures.
+
+**Can the imagination improve itself? (FACT, one seed; confirmation pending).** The imagination drew four candidates for each of 4,000 training situations, the image model of section 1 kept the best one when it was at least 90 percent sure of the right object, and the imagination trained further on a half-and-half mix of its own pictures and real pictures. A control trained for the same number of steps on real pictures only. On new sentences the self-trained version was 91.9 percent right against 87.95 percent, with picture variety at 95 percent of the control's. The caveat is serious: the same image model both chose the pictures and scored the result, so part of the gain may be the imagination learning to please that one judge. A repeat with a second, separately trained judge that never touched the loop is under way, and this result should be read as unconfirmed until it reports.
 
 ## 4. What is next, and the open design question
 

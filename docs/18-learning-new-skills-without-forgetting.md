@@ -34,11 +34,11 @@ Seed 777 gave the same pattern for learn-then-heal (recall 100%, text 3.59, book
 
 Reading:
 
-- **Rollback keeps the old skills but never learns the new one.** Its recall stays at zero, because every time the new skill starts to take hold it disturbs an old one and the copy is restored.
+- **Rollback keeps the old skills but never learns the new one.** Its recall stays at zero, which we think is because each time the new skill starts to take hold it disturbs an old one and the copy is restored (a guess about the mechanism, not a measurement).
 - **Unprotected training learns the new skill and damages the old ones.**
-- **Repair as first built barely learns** (2 to 16 percent recall), so it is not better than rollback by our rule.
-- **Learn, then heal** learns the new skill almost completely, keeps text loss within 0.05 of rollback, and lowers book loss below its starting value, because the healing batches contain book text.
-- **The Countdown column is noisy.** On the 64-puzzle test, learn-then-heal was below rollback by one puzzle more than the written rule allowed on two of three seeds, and above it on the third. A single puzzle is within sampling noise. We therefore re-scored the saved final models of seeds 778 and 779 on 320 puzzles each (pooled 640 attempts): rollback solved 79 (12.3 percent), learn-then-heal 82 (12.8 percent). By the rule written for that re-score, learn-then-heal passes, and the earlier misses were sampling noise. The re-score did not cover seed 777, whose rollback model was not saved.
+- **Repair as first built barely learns** (2 percent recall on the seed shown in the table), so it is not better than rollback by our rule.
+- **Learn, then heal** learns the new skill almost completely, keeps text loss within 0.05 of rollback, and lowers book loss below its starting value, because the healing batches contain book text. That is exposure to book text, not necessarily healing: rollback never saw book text, and a control that replays the same mix without new facts was not run.
+- **The Countdown column is noisy.** On the 64-puzzle test, learn-then-heal was below rollback by four puzzles of 64 (more than the written rule allowed) on two of three seeds, and above it on the third. Differences of that size are within sampling noise. We therefore re-scored the saved final models of seeds 778 and 779 on 320 puzzles each (pooled 640 attempts): rollback solved 79 (12.3 percent), learn-then-heal 82 (12.8 percent). That rule was written after the 64-puzzle misses, so it is post hoc, and the gap of three puzzles in 640 (0.5 points) has a 95 percent interval of about plus or minus 3.6 points. The honest reading is that no difference was detected, not that the two are proven equal. By that rule learn-then-heal passes. The re-score did not cover seed 777, whose rollback model was not saved.
 
 ## 2. Several new skills in a row
 
@@ -67,7 +67,7 @@ Six skills in a row (seed 779 unless stated):
 
 Reading:
 
-- **The share of the batch spent on rehearsing earlier facts is the main lever.** At 25 percent the earlier skills decay quickly; at half they mostly survive; at about 90 percent (14 of 16 examples) six skills are kept at 88 to 94 percent on three seeds. Choosing which set to rehearse by current weakness gave no clear gain over balanced rehearsal.
+- **The share of the batch spent on rehearsing earlier facts is the main lever.** At 25 percent the earlier skills decay quickly; at half they mostly survive; at about 90 percent (14 of 16 examples) six skills are kept at 92 to 94 percent on three seeds with fourteen fact slots (88 percent with thirteen fact slots plus a book example). Choosing which set to rehearse by current weakness gave no clear gain over balanced rehearsal.
 - **Ordinary text, book text and Countdown need very little.** One example of each per batch kept them within a small distance of their starting values. Without a book example the book loss drifts about 0.1 above its starting value (3.21); one book example per batch removed the drift (3.02) at the cost of a few points of recall.
 - **Unprotected training forgets the earlier skills almost completely** and wrecks the general skills (text loss 5.07 after three skills against 3.54 at the start).
 
@@ -88,7 +88,7 @@ The starting values were text 3.54 and book 3.20 to 3.21, and Countdown 10.2 per
 Reading:
 
 - **Halving both learning rates cut the drift of the general skills by more than half** (text from +0.33 to +0.13, book from +0.24 to +0.09, on seed 778), with every new set still learned to 96 to 100 percent and the weakest earlier set equal or higher (85 percent on both seeds). Our guess is that the drift comes from the learning phases themselves, because a test that gave the healing batch two text examples instead of one made text loss worse (3.91) and cost recall, rather than better.
-- **There is a floor.** At a quarter of the original rate the first set was recalled only 78 percent (our rule asked for 90 percent), so the model under-learns. A lower rate with more learning steps was not tried.
+- **There is a floor.** At a quarter of the original rate the first set was recalled only 78 percent (our rule asked for 90 percent), so the model under-learns. A lower rate with more learning steps is tested in section 5.
 - **Text loss still creeps up with every skill** (about 0.01 per stage at the halved rate), so a long enough chain will eventually cross any fixed limit. The 24-skill run below shows this.
 
 ## 4. Twenty-four skills in a row
@@ -112,7 +112,7 @@ One seed (779), halved learning rates, healing batch of one text, one Countdown 
 **FACT, one seed each, 12 skills in a row.** Two follow-up tests, each with its pass rule written first.
 
 - **Slower learning (a quarter of the original rate, twice the learning steps per skill).** Every set was learned to 99 percent or more. Drift of the general skills was the smallest yet (text loss +0.07, book loss +0.045, against +0.11 and +0.095 at the halved rate), at the cost of slightly more forgetting (weakest set 81 percent against 85). Verdict: pass, but not "improved" by the stricter rule, which it narrowly missed.
-- **Rehearsing only the important sets.** Only four of the twelve sets were ever rehearsed after they were learned. Those four stayed at 98 to 100 percent. The other eight faded to 40 percent on average (the two oldest to 2 percent, the newest still at 93 and 100 percent), so the model forgets what it does not use and keeps what matters, a little like a person. Verdict: pass. Drift of the general skills was the same as with full rehearsal (text +0.07, book +0.04), so what limits drift is the learning rate, not how much is rehearsed.
+- **Rehearsing only the important sets.** Only four of the twelve sets were ever rehearsed after they were learned. Those four stayed at 98 to 100 percent. The other eight faded to 40 percent on average (the two oldest to 2 percent, the newest still at 93 and 100 percent), so the model forgets what it does not use and keeps what matters, loosely like a person. Verdict: pass. Drift of the general skills was the same as with full rehearsal (text +0.07, book +0.04), so how much is rehearsed does not seem to be what limits drift. The learning rate is the likelier cause, but the slower-rate run also used twice the learning steps, so rate and steps are not separated (one seed).
 - **Limit.** The "important" sets were chosen by us in advance. How a real system decides what matters is untested.
 
 ## 6. A skill that needs reasoning, not memory
@@ -152,10 +152,10 @@ Verdict by the rule written first (all three skills at 60 percent or more, text 
 | 3 reasoning skills, 200 healing steps (new seed) | sort 87.5% | 3.587 | 3.230 | **improved** |
 | 3 reasoning skills, 200 healing steps (second new seed) | sort 76% | 3.597 | 3.248 | pass |
 
-Reversing stayed at 100 percent and finding the largest at 97 percent or better in every reasoning run. Reading across the seeds:
+Reversing stayed at 99.5 percent or better and finding the largest at 97 percent or better in every reasoning run. Reading across the seeds:
 
 - **The fact-skill results repeat.** Weakest-skill recall of 81 to 87 percent and text loss around 3.61 to 3.70 on four seeds in total. The slower learning rate again gave the least drift.
-- **Longer healing helps the hardest reasoning skill, and it repeats.** On every matched pair, 200 healing steps beat 100 (sorting 68 to 75.5 percent on the home seed, 79 to 87.5 percent on the first cloud seed). The size of the gain varies a lot from seed to seed (the sorting score at 200 steps was 75.5, 87.5 and 76 percent), so single-seed numbers for the hard skill should be read as roughly plus or minus 6 points.
+- **Longer healing seems to help the hardest reasoning skill** (the same direction on both matched pairs, which is a small sample). On each pair, 200 healing steps beat 100 (sorting 68 to 75.5 percent on the home seed, 79 to 87.5 percent on the first cloud seed). The size of the gain varies a lot from seed to seed (the sorting score at 200 steps was 75.5, 87.5 and 76 percent), so single-seed numbers for the hard skill should be read as uncertain by roughly 6 points from puzzle sampling alone, and by more from seed to seed.
 - Cost of this batch on rented hardware: under 9 US dollars for five runs of one to one and a half hours each.
 
 **More repeats (FACT).**
