@@ -127,6 +127,17 @@ One seed (779), halved learning rates, healing batch of one text, one Countdown 
 
 Verdict by the rule written first (sorting at least 60 percent, text and book loss up by no more than 0.15, Countdown within 6 points of its start): **pass** for learn-then-heal. During learning Countdown fell to 1.6 percent and recovered during the healing phase, which is what the healing phase is for. Limits: one seed, one simple skill, and the healing batch here rehearses fresh sorting puzzles, not a stored set. Whether it holds for harder skills, or for several reasoning skills in a row, is untested.
 
+**Three reasoning skills in a row (FACT, one seed).** The same recipe was then run on three skills one after another: sort four numbers, reverse four numbers, and find the largest of four. Each stage was 600 learning steps and 100 healing steps, and the healing batch rehearsed the skills learned so far with fresh puzzles.
+
+| After stage | Sorting | Reversing | Largest | Text loss | Book loss | Countdown |
+|---|---|---|---|---|---|---|
+| Start | 0% | 0% | 0% | 3.54 | 3.21 | 10.2% |
+| Sort learned | 83% | 4% | 0% | 3.60 | 3.25 | 11.7% |
+| Reverse learned | 77% | 100% | 0% | 3.62 | 3.27 | 10.2% |
+| Largest learned | 68% | 100% | 97% | 3.62 | 3.26 | 10.9% |
+
+Verdict by the rule written first (all three skills at 60 percent or more, text and book loss up by no more than 0.20, Countdown within 6 points of its start): **pass**. The sorting skill, the hardest of the three, slowly faded (83, 77, 68 percent) and is the closest to the line, so a longer chain of reasoning skills would need more healing or more rehearsal of the hard ones. This is untested beyond three skills.
+
 ## What this does and does not show
 
 - It is evidence, at small scale, that a model can take on new material and keep what it had if the new learning is followed by a short healing phase that is mostly rehearsal of what was learned before. Rolling back, in our test, protects old skills only by refusing to learn.
