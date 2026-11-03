@@ -140,6 +140,24 @@ Verdict by the rule written first (all three skills at 60 percent or more, text 
 
 **Longer healing (FACT, one seed).** Doubling the healing phase to 200 steps per stage raised the final sorting score from 68 to 75.5 percent (reversing 100, largest 98), with text loss up only 0.05, book loss up 0.035 and Countdown at 14.1 percent. Verdict: pass, but it missed the stricter "improved" line (sorting at 80 percent or more) by 4.5 points. Sorting still faded a little at every stage (82.5, 76.5, 75.5), so the hard skill is the one that needs the most care.
 
+## 7. Repeating the key results on new seeds (cloud GPUs)
+
+**FACT.** To find out which findings are real and which were luck, five of the tests above were repeated on new random seeds on rented cloud GPUs, with the pass lines unchanged.
+
+| Test (seed) | Weakest skill at the end | Text loss | Book loss | Verdict by the written rule |
+|---|---|---|---|---|
+| 12 fact skills, quartered rates (new seed) | 87% (home seed: 81%) | 3.616 (home: 3.613) | 3.238 | pass |
+| 12 fact skills, halved rates (third seed) | 85% (home seeds: 85%, 85%) | 3.698 (home: 3.653, 3.673) | 3.325 | pass |
+| 3 reasoning skills, 100 healing steps (new seed) | sort 79% (home seed: 68%) | 3.609 | 3.243 | pass |
+| 3 reasoning skills, 200 healing steps (new seed) | sort 87.5% | 3.587 | 3.230 | **improved** |
+| 3 reasoning skills, 200 healing steps (second new seed) | sort 76% | 3.597 | 3.248 | pass |
+
+Reversing stayed at 100 percent and finding the largest at 97 percent or better in every reasoning run. Reading across the seeds:
+
+- **The fact-skill results repeat.** Weakest-skill recall of 81 to 87 percent and text loss around 3.61 to 3.70 on four seeds in total. The slower learning rate again gave the least drift.
+- **Longer healing helps the hardest reasoning skill, and it repeats.** On every matched pair, 200 healing steps beat 100 (sorting 68 to 75.5 percent on the home seed, 79 to 87.5 percent on the first cloud seed). The size of the gain varies a lot from seed to seed (the sorting score at 200 steps was 75.5, 87.5 and 76 percent), so single-seed numbers for the hard skill should be read as roughly plus or minus 6 points.
+- Cost of this batch on rented hardware: under 9 US dollars for five runs of one to one and a half hours each.
+
 ## What this does and does not show
 
 - It is evidence, at small scale, that a model can take on new material and keep what it had if the new learning is followed by a short healing phase that is mostly rehearsal of what was learned before. Rolling back, in our test, protects old skills only by refusing to learn.
