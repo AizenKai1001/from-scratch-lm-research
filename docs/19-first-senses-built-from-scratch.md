@@ -32,6 +32,18 @@ The pass line, written first, was 90 percent in under an hour. Both seeds pass, 
 - **Result: word error rate 24.6 percent on the test set** (24.7 percent on the validation set used to pick the checkpoint). That passes the line. About three words in four are right.
 - **Limits.** One seed. No language model is used to clean up the output, which is plain greedy decoding. The speech is clean, read audiobook speech; noisy or spontaneous speech would be much worse. It is a first version, far from the best published results.
 
+## 3b. The imagination, first version: pictures from the brain's own thoughts
+
+**FACT, one seed.** The aim for the imagination is that it works without being told to draw: the language model reads ordinary conversation, and what it is currently "thinking about" decides what appears. As a first test, the frozen language model read a sentence that never mentions drawing ("Yesterday I saw a cat near the old bridge."), and its inner state (1,280 numbers taken from its last layer) was the only input to a small image maker (a conditional diffusion network of 13 million parameters, no pretrained weights, 24,000 steps, about 54 minutes on a small consumer GPU, trained on the 50,000 CIFAR-10 training pictures). The sentence-to-picture link was learned from 20 sentence templates for each of the ten objects. It was judged on 8 different templates, by the frozen image model of section 1, which names what it sees; no test sentence or test picture was used in training.
+
+| Test | Result | Written pass line |
+|---|---|---|
+| Held-out sentences that name the object (2,000 pictures) | **83.95% named correctly** | 70% (chance 10%) |
+| Descriptions that never name the object, for example "it purrs, curls up on the sofa" (1,800 pictures) | 46.7% | none (report only) |
+| Unrelated sentences (weather, homework): share of the most common judged object | 23.8% | none (should not collapse to one object) |
+
+Verdict by the rule written first: **pass**. Cars, horses, ships and frogs are clearly recognisable in the sample grid; planes and birds are the weakest. The descriptive result is the more interesting one for the goal: the language model's own state carries enough meaning that a description with no object word still produces the right kind of picture almost half the time. Limits: 32 by 32 pictures, ten objects, templated sentences, one seed. It is a still image per sentence, not a continuous live stream, and it does not yet follow a topic change within a conversation or use reference pictures. Those are the next tests.
+
 ## 4. What is next, and the open design question
 
 - **GUESS.** The senses will be built in this order: ears and a voice together (the voice can be checked by the ears reading back what the voice said, so no human listening is needed), then the eyes in their next versions, then the imagination, which could reuse the eyes' encoder.
