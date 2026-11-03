@@ -115,10 +115,22 @@ One seed (779), halved learning rates, healing batch of one text, one Countdown 
 - **Rehearsing only the important sets.** Only four of the twelve sets were ever rehearsed after they were learned. Those four stayed at 98 to 100 percent. The other eight faded to 40 percent on average (the two oldest to 2 percent, the newest still at 93 and 100 percent), so the model forgets what it does not use and keeps what matters, a little like a person. Verdict: pass. Drift of the general skills was the same as with full rehearsal (text +0.07, book +0.04), so what limits drift is the learning rate, not how much is rehearsed.
 - **Limit.** The "important" sets were chosen by us in advance. How a real system decides what matters is untested.
 
+## 6. A skill that needs reasoning, not memory
+
+**FACT, one seed, one skill.** The biggest open question was whether learn-then-heal works when the new skill cannot be memorised. The new skill was sorting four numbers from 0 to 99 (for example "sort 52 7 90 13" should give "7 13 52 90"), scored by exact match on 200 fresh puzzles never seen in training. The model started at 0 percent. Both arms started from the same saved model: learn-then-heal (600 learning steps, then 100 healing steps with a batch of one text example, one Countdown example and fourteen sorting examples), and unprotected (700 steps on sorting only).
+
+| Arm | Sorting solved | Text loss | Book loss | Countdown |
+|---|---|---|---|---|
+| Start | 0% | 3.54 | 3.21 | 10.2% |
+| Learn-then-heal | 88.5% | 3.60 | 3.25 | 8.6% |
+| Unprotected | 85.0% | 3.85 | 3.41 | 2.3% |
+
+Verdict by the rule written first (sorting at least 60 percent, text and book loss up by no more than 0.15, Countdown within 6 points of its start): **pass** for learn-then-heal. During learning Countdown fell to 1.6 percent and recovered during the healing phase, which is what the healing phase is for. Limits: one seed, one simple skill, and the healing batch here rehearses fresh sorting puzzles, not a stored set. Whether it holds for harder skills, or for several reasoning skills in a row, is untested.
+
 ## What this does and does not show
 
 - It is evidence, at small scale, that a model can take on new material and keep what it had if the new learning is followed by a short healing phase that is mostly rehearsal of what was learned before. Rolling back, in our test, protects old skills only by refusing to learn.
-- **The new skills are memorised facts.** Facts are easy to rehearse exactly. Whether the same recipe works for skills that need reasoning, or for material that cannot be replayed verbatim, is untested and is the biggest open question.
+- **Most of the new skills are memorised facts.** Facts are easy to rehearse exactly. Section 6 shows the recipe working for one reasoning skill (sorting), but several reasoning skills in a row, harder skills, and material that cannot be replayed verbatim are untested and are the biggest open questions.
 - **Rehearsal needs old material to be kept.** An always-learning system would need a small store of earlier examples, and a way to decide what to keep as the number of skills grows.
 - One model size and one to three seeds. The 64-puzzle Countdown test is too noisy to decide small differences; the 128-puzzle and 320-puzzle versions are better but still limited.
 - The learning rates and batch mixes were tuned within these tests, one change at a time, each against a rule written before the run. They are not proven to be best.
