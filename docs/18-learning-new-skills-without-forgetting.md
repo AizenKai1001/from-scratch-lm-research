@@ -107,6 +107,14 @@ One seed (779), halved learning rates, healing batch of one text, one Countdown 
 - **Text and book loss are close to their limits.** Text rose by 0.27 against an allowed 0.30, and book by 0.24 against an allowed 0.25. A longer chain would cross them, as the 0.01-per-stage creep predicted. So 24 skills is about where this recipe stops fitting those limits, not evidence that it scales without bound.
 - **Limits.** One seed, memorised facts only, and each stage used 100 facts.
 
+## 5. Letting unimportant things fade, and a slower learning rate
+
+**FACT, one seed each, 12 skills in a row.** Two follow-up tests, each with its pass rule written first.
+
+- **Slower learning (a quarter of the original rate, twice the learning steps per skill).** Every set was learned to 99 percent or more. Drift of the general skills was the smallest yet (text loss +0.07, book loss +0.045, against +0.11 and +0.095 at the halved rate), at the cost of slightly more forgetting (weakest set 81 percent against 85). Verdict: pass, but not "improved" by the stricter rule, which it narrowly missed.
+- **Rehearsing only the important sets.** Only four of the twelve sets were ever rehearsed after they were learned. Those four stayed at 98 to 100 percent. The other eight faded to 40 percent on average (the two oldest to 2 percent, the newest still at 93 and 100 percent), so the model forgets what it does not use and keeps what matters, a little like a person. Verdict: pass. Drift of the general skills was the same as with full rehearsal (text +0.07, book +0.04), so what limits drift is the learning rate, not how much is rehearsed.
+- **Limit.** The "important" sets were chosen by us in advance. How a real system decides what matters is untested.
+
 ## What this does and does not show
 
 - It is evidence, at small scale, that a model can take on new material and keep what it had if the new learning is followed by a short healing phase that is mostly rehearsal of what was learned before. Rolling back, in our test, protects old skills only by refusing to learn.
