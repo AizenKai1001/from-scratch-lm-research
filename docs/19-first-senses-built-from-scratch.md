@@ -64,7 +64,7 @@ To move the imagination from 32 by 32 pictures of ten objects to 64 by 64 pictur
 
 ## 3d. Imagination at 64x64 with 100 object types (FACT, single run)
 The language model reads an ordinary sentence that mentions an object; its inner state is the only condition for a small image generator trained from scratch for about 3 hours. Two independent judge networks (never trained on generated pictures) named the intended object in 41.7 and 41.4 percent of 1,600 generated pictures (pre-registered bars: 35 and 30; chance: 1). The same judges score 77 and 78 percent on real pictures, so the generator reaches about half the real ceiling. Control: with the sentence shuffled to a wrong one, the intended object appeared only 0.4 percent of the time, so the sentence drives the picture.
-Limits: one run, 100 object types, templated sentences, small model. This shows recognisable categories, not photo quality. Not yet checked: whether it copies training pictures, and a plain class-label control.
+Limits: one run, 100 object types, templated sentences, small model. This shows recognisable categories, not photo quality. Copying check (FACT): the generated pictures sit no closer to their nearest training picture than unseen real pictures do (feature similarity median 0.855 against 0.883; pixel distance 0.380 against 0.396), so no sign of copying by this one measure. Not yet checked: a plain class-label control.
 
 ## 4. What is next, and the open design question
 
