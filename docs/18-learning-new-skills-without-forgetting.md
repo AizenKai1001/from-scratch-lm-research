@@ -158,6 +158,10 @@ Reversing stayed at 100 percent and finding the largest at 97 percent or better 
 - **Longer healing helps the hardest reasoning skill, and it repeats.** On every matched pair, 200 healing steps beat 100 (sorting 68 to 75.5 percent on the home seed, 79 to 87.5 percent on the first cloud seed). The size of the gain varies a lot from seed to seed (the sorting score at 200 steps was 75.5, 87.5 and 76 percent), so single-seed numbers for the hard skill should be read as roughly plus or minus 6 points.
 - Cost of this batch on rented hardware: under 9 US dollars for five runs of one to one and a half hours each.
 
+**More repeats (FACT).**
+- **24 fact skills in a row, second seed (cloud).** The weakest older skill ended at 77 percent (the line was 70). Text loss rose by 0.2996 against a limit of 0.30, and book loss by 0.2518 against a limit of 0.25, so by the rule written first the verdict is "mixed", missing the book line by 0.002. The first seed (section 4) passed with 0.244. Reading both: 24 skills is exactly where this recipe reaches its drift limit, and the drift grows steadily with each skill (text loss up 0.04 after the first skill, 0.15 after twelve, 0.30 after twenty-four).
+- **Giving the hardest reasoning skill half of the rehearsal slots (two more seeds).** Sorting ended at 87.5 percent (the same as without the extra slots) on one seed and 79 percent (against 76) on the other, with the earlier home run at 79 against 75.5. That is roughly 2 to 3 points on average, which is inside the seed-to-seed noise, so it is not a proven improvement.
+
 ## What this does and does not show
 
 - It is evidence, at small scale, that a model can take on new material and keep what it had if the new learning is followed by a short healing phase that is mostly rehearsal of what was learned before. Rolling back, in our test, protects old skills only by refusing to learn.
