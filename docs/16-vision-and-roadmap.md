@@ -32,7 +32,7 @@ A small language model whose brain is never switched off:
 | Long memory on a card or disk | spill old key and value blocks to storage, keep a small hot part in fast memory | GUESS. A design and a benchmark are drafted; nothing measured on real storage |
 | Per-user tailoring | a bounded per-user adapter on a frozen shared base | GUESS. Not built |
 | Self-improving code | an automated propose-test-keep loop | PARTIAL: our process already works this way with written-down-first rules, but a human approves every change to the production model |
-| Eyes, ears, voice, imagination | small encoders, built from scratch, connected to the same brain | FACT (document 19): a 2.24-million-parameter image model reached 90.4 and 90.1 percent on CIFAR-10 on two seeds, and a small bridge let the frozen language model name the pictured class 90.5 percent of the time with its text behaviour unchanged. The ears are training; the voice and imagination are not started |
+| Eyes, ears, voice, imagination | small encoders, built from scratch, connected to the same brain | FACT (document 19): a 2.24-million-parameter image model reached 90.4 and 90.1 percent on CIFAR-10 on two seeds, and a small bridge let the frozen language model name the pictured class 90.5 percent of the time with its text behaviour unchanged. The ears (7.1 million parameters, from scratch) reached a 24.6 percent word error rate on held-out clean speech, and a first imagination drew the right kind of picture from the language model's own state 84 percent of the time on held-out sentences (32 by 32 pictures, ten objects, templated sentences; document 19 has the limits and the failed first attempts at topic changes). The voice is not started |
 
 ## Hard problems we expect
 
