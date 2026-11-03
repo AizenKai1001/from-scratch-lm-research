@@ -138,6 +138,8 @@ Verdict by the rule written first (sorting at least 60 percent, text and book lo
 
 Verdict by the rule written first (all three skills at 60 percent or more, text and book loss up by no more than 0.20, Countdown within 6 points of its start): **pass**. The sorting skill, the hardest of the three, slowly faded (83, 77, 68 percent) and is the closest to the line, so a longer chain of reasoning skills would need more healing or more rehearsal of the hard ones. This is untested beyond three skills.
 
+**Longer healing (FACT, one seed).** Doubling the healing phase to 200 steps per stage raised the final sorting score from 68 to 75.5 percent (reversing 100, largest 98), with text loss up only 0.05, book loss up 0.035 and Countdown at 14.1 percent. Verdict: pass, but it missed the stricter "improved" line (sorting at 80 percent or more) by 4.5 points. Sorting still faded a little at every stage (82.5, 76.5, 75.5), so the hard skill is the one that needs the most care.
+
 ## What this does and does not show
 
 - It is evidence, at small scale, that a model can take on new material and keep what it had if the new learning is followed by a short healing phase that is mostly rehearsal of what was learned before. Rolling back, in our test, protects old skills only by refusing to learn.
