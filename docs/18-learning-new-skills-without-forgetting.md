@@ -162,11 +162,11 @@ Reversing stayed at 99.5 percent or better and finding the largest at 97 percent
 - **24 fact skills in a row, second seed (cloud).** The weakest older skill ended at 77 percent (the line was 70). Text loss rose by 0.2996 against a limit of 0.30, and book loss by 0.2518 against a limit of 0.25, so by the rule written first the verdict is "mixed", missing the book line by 0.002. The first seed (section 4) passed with 0.244. Reading both: 24 skills is exactly where this recipe reaches its drift limit, and the drift grows steadily with each skill (text loss up 0.04 after the first skill, 0.15 after twelve, 0.30 after twenty-four).
 - **Giving the hardest reasoning skill half of the rehearsal slots (two more seeds).** Sorting ended at 87.5 percent (the same as without the extra slots) on one seed and 79 percent (against 76) on the other, with the earlier home run at 79 against 75.5. That is roughly 2 to 3 points on average, which is inside the seed-to-seed noise, so it is not a proven improvement.
 
-## 8. Runs on independent seeds (cloud, after the seeding fix)
+## 8. Runs on fresh seeds (cloud, one run per cell, after the seeding fix)
 
 **FACT, one run per cell.** After the code review found that neighbouring seeds shared shifted batch streams, the scripts were fixed so that batch order, fact sets, answer codes and reasoning puzzles all depend on the seed, and three new runs were made with the pass lines unchanged.
 
-| Run (independent seed) | Result | Verdict by the written rule |
+| Run (fresh seed) | Result | Verdict by the written rule |
 |---|---|---|
 | 12 fact skills, quartered rates | weakest skill 82 percent (average 91), text loss up 0.063, book loss up 0.035, Countdown unchanged | pass (weakest skill and text loss just short of the stricter "improved" line) |
 | 3 reasoning skills, 100 healing steps | sorting 70 percent, reversing 100, largest 96, text loss up 0.069 | pass |

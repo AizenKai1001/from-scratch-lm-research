@@ -171,7 +171,7 @@ FACT for every row (read from the saved record of each session): production chai
 - Benchmark results at each milestone. Benchmarks were run at a few points, mainly for the comparison runs.
 - That the schedule and sizes are optimal. Session length, cooldown length and data plan were chosen under time limits, and the cooldown length has not been tested at this scale.
 - Performance on text outside the validation family. The validation text is one educational-web family.
-- Independent verification. The runs were designed, executed and checked with an AI assistant under the owner's decisions, and the skeptic passes were also AI-run. No outside reviewer is recorded in the notes.
+- No outside verification. The runs were designed, executed and checked with an AI assistant under the owner's decisions, and the skeptic passes were also AI-run. No outside reviewer is recorded in the notes.
 
 ## Open questions
 

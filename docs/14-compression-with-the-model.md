@@ -37,7 +37,7 @@ The full file is about 2.2 times smaller than the best classic tool. Encoding it
 
 The model has 142.9 million parameters: 59.0 million in the transformer block weights, and 83.9 million in four tables of about 21 million each (token embedding, output head, and two value-embedding tables). That is 286 MB at half precision and 572 MB at full precision.
 
-We rounded the weights after training, with no retraining, and measured on 923 KB of held-out text (full-precision baseline 1.0738 bpb) (FACT):
+We rounded the weights after training, with no retraining (simulated in floating point; no packed file was written), and measured on 923 KB of held-out text (full-precision baseline 1.0738 bpb) (FACT):
 
 | Setting | Bits per byte | Change | Packed size |
 |---|---|---|---|

@@ -90,7 +90,7 @@ Our observations:
 
 ## 8. Ours versus typical
 
-| Aspect | Typical, in the published sources we read | Ours (FACT unless marked) | Status: proven in our tests / borrowed / untested |
+| Aspect | Typical, in the published sources we read | Ours (FACT unless marked) | Status: checked in our tests / borrowed / untested |
 |---|---|---|---|
 | Optimizer for weight matrices | Adam or AdamW (GPT-3: Adam; LLaMA and Llama 3: AdamW) | Muon, learning rate 0.02 | Borrowed (Jordan write-up; Liu et al. 2025); no Muon-versus-AdamW test of our own in the notes read |
 | Optimizer for the rest | AdamW | Adam, learning rate 0.008; embedding multiplier 20; beta2 0.99 | Borrowed rule; the values are ours and untested as a set |
@@ -102,13 +102,13 @@ Our observations:
 | Context length | 1,024 (GPT-2); 2,048 (GPT-3, Pythia); 8,192 (Llama 3) | 1,024, with a short sequence ramp in session 0 | Context ours; ramp borrowed from the speed-run README |
 | Tokens per parameter | About 20 (Chinchilla, arithmetic); about 1,850 (Pythia-160M) and 4,400 (SmolLM-135M), arithmetic | 63 planned; about 15 so far (arithmetic) | Ours; plan not finished |
 | Repeated data | About one pass (Pythia); up to 4 epochs negligible (Muennighoff et al.); GPT-3 repeated some sources 1.9 to 3.4 times | About 3.2 epochs in plan A; about 69 percent of each session from the repeated pool in the current plan | Partly tested: one paired test, +0.025 nats per extra half pass |
-| Run structure | One run per model in the papers we read | About 177 chained 24-minute sessions, with validation gates and 5-minute rests | Proven in smoke tests (continuity; kill and resume); full run in progress |
+| Run structure | One run per model in the papers we read | About 177 chained 24-minute sessions, with validation gates and 5-minute rests | Checked in smoke tests (continuity; kill and resume); full run in progress |
 | Logit soft-capping | Gemma 2: 50 on attention, 30 on final logits | Tanh cap of 15 on the final logits | Borrowed; not tested separately in the notes read |
 | Partial key offset | Not in the sources read (speed-run README only) | On | Borrowed; three equal-clock pairs at -0.0052, -0.0065, -0.0070 bits per byte; at 45 million, -0.0061 over four seeds |
 | Value residual | Zhou et al. 2024 (cited by the speed-run README) | On, with a 0.5 initial setting | Borrowed; no separate test in the notes read |
 | Value embeddings | Speed-run README only | On | Borrowed; no separate test in the notes read |
 | Muon update scale | 0.2 times the square root of the larger dimension (Liu et al. 2025) | Not used, as far as the notes show | Not used |
-| Evaluation | Bits per byte (Gao et al. 2020); HellaSwag, ARC, LAMBADA | Validation bits per byte on 2 million held-out tokens; nats for chain-two; benchmarks at milestones | Proven in our runs, with noise given; not comparable across proxy and production |
+| Evaluation | Bits per byte (Gao et al. 2020); HellaSwag, ARC, LAMBADA | Validation bits per byte on 2 million held-out tokens; nats for chain-two; benchmarks at milestones | Checked in our runs, with noise given; not comparable across proxy and production |
 
 ## What this does not show
 

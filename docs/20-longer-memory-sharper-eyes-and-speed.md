@@ -66,17 +66,17 @@ The 4.8x comes from compilation, not the cache: a static cache without compilati
 
 Speed is not the limit for a 1.7B brain; memory for long context is. **PENDING:** the same benchmark on the 4060, int8 variants, and a quality test of the 1.7B models (not run; the recipe that worked on the 360M did not transfer to another 0.5B model in an earlier test).
 
-**Human timing envelope.** Reference ranges for people are taken from our notes and have not been re-checked. Measured values are from the runs above.
+**Human timing envelope.** Reference ranges for people are taken from our notes and have not been re-checked. The measured values for the first two rows are first-token latencies on random or noise stand-in inputs only (no real frames or clips were timed). This table is NOT a human-timing pass; it shows only that the stand-in latencies are well below the targets we set.
 
 | Part | Human reference (approx.) | Target we set | Measured | Status |
 |---|---|---|---|---|
-| Picture to first thought | gist 100-150 ms; visual reaction 200-250 ms | 300 ms or less | about 30 ms on random input | Passes on the proxy; real frames not timed |
-| Speech to first thought | auditory reaction about 150 ms | 300 ms or less | about 31 ms on 5 s of noise | Real clip latency not measured |
+| Picture to first thought | gist 100-150 ms; visual reaction 200-250 ms | 300 ms or less | about 25 to 31 ms on a random-picture stand-in | Below target on stand-in input only; real frames not timed; not a human-timing comparison |
+| Speech to first thought | auditory reaction about 150 ms | 300 ms or less | about 31 ms on 5 s of noise (stand-in) | Below target on stand-in input only; real clips not timed; not a human-timing comparison |
 | Looking at frames | 3-5 looks per second | 1-3 looks per second | 1 look per second, uniform | Glance policy not yet a win |
 | Text output | reads 4-5 words per second | paced to human speed when shown to a person | 173-190 tokens per second | Model is much faster; pacing not built |
 | Long memory | (no single figure) | as long as possible | reliable to 8k, not 16k | Gap remains |
 
-Reading: perception is already at or faster than the reference, so the open gaps are outward pacing, long memory and the glance policy.
+Reading: first-token latency on stand-in inputs is well under the 300 ms target we set, but that is not a comparison with people, and the human references are unchecked. The open gaps are timing on real frames and clips, outward pacing, long memory and the glance policy.
 
 ## 4. Lessons from code reviews that changed conclusions
 
