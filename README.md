@@ -29,6 +29,7 @@ Research notes, tests, results and open questions from training a 143-million-pa
 | Can the model learn new skills in a row without forgetting old ones (repair or rollback, and what works)? | [18 Learning new skills without forgetting](docs/18-learning-new-skills-without-forgetting.md) |
 | Were the senses (eyes, ears) first built from scratch, and can the language model use them? (The from-scratch rule was later lifted for some parts.) | [19 First senses, built from scratch](docs/19-first-senses-built-from-scratch.md) |
 | How much text can the small brain use at once, can its eyes see small details in a wide frame, and how fast is it? | [20 Longer memory, sharper eyes, and speed](docs/20-longer-memory-sharper-eyes-and-speed.md) |
+| Which eye designs read a small object, does replaying old facts really protect them, and how do we check our own work? | [21 Small details, memory, and how we check ourselves](docs/21-small-details-memory-and-how-we-check-ourselves.md) |
 
 ## Results at a glance
 
@@ -98,6 +99,7 @@ What held up against a control or against a prediction that could have failed: t
 | 18 | [Learning new skills without forgetting](docs/18-learning-new-skills-without-forgetting.md) | Repair, rollback and learn-then-heal on a real model: one new skill, three, six and twelve in a row, the healing batch mix, the learning-rate halving and its limits |
 | 19 | [First senses, built from scratch](docs/19-first-senses-built-from-scratch.md) | A tiny image model built from scratch, the bridge that lets the frozen language model read what it sees, the ears (24.6 percent word error rate) and the open design questions |
 | 20 | [Longer memory, sharper eyes, and speed](docs/20-longer-memory-sharper-eyes-and-speed.md) | Corrected context-length tests of the 360M brain, picture-reading tests on a small synthetic detail (tiles, question-driven tile choice, cheaper compressions; two seeds for the main arms), foveated glance, speed and a bigger-brain benchmark, and the code-review lessons that changed conclusions |
+| 21 | [Small details, memory, and how we check ourselves](docs/21-small-details-memory-and-how-we-check-ourselves.md) | Tile and question-driven eye designs at equal training (two seeds for the main arms), the replay-versus-no-replay forgetting test with its limits, and the review habits that caught real bugs before GPU time was spent |
 
 ## How to read the labels
 
