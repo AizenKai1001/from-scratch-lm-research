@@ -17,7 +17,7 @@ The plain 32k and 64k results (both 0.00) came from the first generator and have
 
 **Reading.** The plain model is reliable to 4k and weaker at 8k, especially for facts placed early in the text. YaRN without training reaches 0.75 at 16k on average but still fails early in the text. No setting yet passes the 16k gate (0.80).
 
-**PENDING.** A continued-training run with a larger rope base on 8k then 32k tokens is running on Kaggle. Its weights must be re-scored with the corrected generator before any claim. The planned comparison of YaRN, continued training, a mix of no-position and rope layers, and quantised memory at 32k, 128k and 1M has not started. Each stage has a written pass rule, and the 1M target is only tried after 128k passes.
+**PENDING.** A continued-training run with a larger rope base, on 8k then 32k tokens, was sent to Kaggle. The first attempt crashed at start-up on a configuration argument and was cancelled, so it produced no weights. A second attempt has been running since about 3:15 PM on 5 November; no result file was on disk at the last check. Any weights must be re-scored with the corrected generator before any claim. The planned comparison of YaRN, continued training, a mix of no-position and rope layers, and quantised memory at 32k, 128k and 1M has not started. Each stage has a written pass rule, and the 1M target is only tried after 128k passes.
 
 ## 2. Sharper eyes
 
@@ -30,7 +30,9 @@ The eyes are a frozen SigLIP picture encoder with a small trained connector (2.7
 | A: whole frame squashed to 224 | 0.13 | 0.37 | 49 |
 | B: 2 by 4 tiles plus a whole view | 0.96 | 0.153 | 441 |
 
-B used batch 4 instead of 8 because of memory, so at equal steps it saw half as many examples, and the caption comparison is confounded. By the written rule, B passed the detail test and failed the caption guard (captions must stay within 0.03 of A). The overall verdict is therefore FAIL by the literal rule. The honest reading: resolution helps small objects a lot, and tiles cost caption quality and about nine times the tokens. A follow-up at equal examples (9,600 per arm, two seeds, with three cheaper tiled variants) is **PENDING**.
+B used batch 4 instead of 8 because of memory, so at equal steps it saw half as many examples, and the caption comparison is confounded. By the written rule, B passed the detail test and failed the caption guard (captions must stay within 0.03 of A). The overall verdict is therefore FAIL by the literal rule. The honest reading at that point: resolution helps small objects a lot, and the caption gap was the batch confound (see below). Tiles cost about nine times the tokens.
+
+**FACT, equal examples (9,600 per arm, two seeds, 300 test items).** Full tiles (2 by 4 plus whole view, 441 tokens): colour 0.967 on seed 11 and 0.927 on seed 12, captions 0.253 and 0.34. Squashed 224 (49 tokens): colour 0.13 and 0.137, captions 0.243 and 0.21. By the written colour and caption rules, both seeds pass. Speed on a quiet GPU is still **PENDING**.
 
 **FACT, earlier 15-minute runs on stretched Flickr pictures.** Caption retrieval among 300: squashed 224 0.403 (49 tokens), squashed 384 0.457 (144 tokens), tiles 0.387 (441 tokens). Tiles did not beat the squash on captions in this run.
 
@@ -38,9 +40,11 @@ B used batch 4 instead of 8 because of memory, so at equal steps it saw half as 
 
 **Seed spread.** Two runs of the identical squashed arm gave colour 0.143 and 0.213 (2,406 and 2,759 steps). So differences under about 0.07 on one run are not results.
 
-**Foveated glance.** The whole frame at 224 plus one full-resolution crop around a saliency peak (98 tokens). Two runs of the same arm: colour 0.243 and captions 0.463 at 2,085 steps in a fixed-minutes run, and colour 0.21 and captions 0.473 at exactly 2,000 steps. The rule needed colour at least 0.15 above the squash (0.13 at equal steps), so it did not pass. The crop window contained the square only 19 percent of the time (a random window: 10 percent), so the saliency rule itself is weak: a colour-contrast map cannot know which square the question is about, because other saturated squares exist. A question-driven tile choice (training-free, 98 tokens) is built and **PENDING**; a two-glance variant ran too few steps to count.
+**Foveated glance.** The whole frame at 224 plus one full-resolution crop around a saliency peak (98 tokens). Two runs of the same arm: colour 0.243 and captions 0.463 at 2,085 steps in a fixed-minutes run, and colour 0.21 and captions 0.473 at exactly 2,000 steps. The rule needed colour at least 0.15 above the squash (0.13 at equal steps), so it did not pass. The crop window contained the square only 19 percent of the time (a random window: 10 percent), so the saliency rule itself is weak: a colour-contrast map cannot know which square the question is about, because other saturated squares exist. A question-driven tile choice (training-free, 98 tokens, arm H) is measured: colour 0.74 on seed 11 and 0.72 on seed 12, captions 0.327 and 0.39. Both seeds miss the 0.80 colour bar, so it does not pass; the chosen tile contains the square about 66 percent of the time. A refined query (H3, 98 tokens) scored colour 0.88 on seed 11, and seed 12 has not been run. Two-tile picks (H2, 147 tokens) failed on both seeds (0.117 and 0.143). A two-glance variant ran too few steps to count.
 
-**PENDING.** Equal-step glance arms, cheaper tiled variants at 108, 128 and 64 tokens (built, not run), timing on a quiet GPU, and a second seed for every arm. Real film frames have not been tested yet; the colour test is synthetic.
+**FACT, cheaper tiled variants at equal examples, seed 11 only.** T2 (108 tokens, coarse pooling): colour 0.13, captions 0.213. T3 (128 tokens, adjacent-token merge): colour 0.15, captions 0.353. T4 (64 learned queries, trained from scratch): colour 0.09, captions 0.007. All three fail the colour bar, so these cheap compressions did not keep the small detail. They were not repeated on seed 12 after seed 11 failed.
+
+**PENDING.** Equal-step glance arms, timing on a quiet GPU, and a second seed for the glance arms. Real film frames have not been tested yet; the colour test is synthetic.
 
 ## 3. Speed
 
@@ -53,7 +57,7 @@ B used batch 4 instead of 8 because of memory, so at equal steps it saw half as 
 | Static cache plus compile | 189.9 | 4.8x | yes |
 | Eager attention, default cache | 32.4 | 0.83x | yes |
 
-The 4.8x comes from compilation, not the cache: a static cache without compilation was slower (36 tokens per second). An earlier static-cache measure gave 173 tokens per second on a card not recorded in the log. The first token takes 25 to 35 ms across picture, speech and text inputs (measured 24.7 to 31.2 ms on the 4060 in bf16, and 25 ms on the 2060 in fp16).
+The 4.8x is for the static cache with compilation together (arm C). The two were not measured separately, so the gain cannot be assigned to compilation alone. An earlier note quoted 173 tokens per second for a static cache; no result file supports that figure, so it is not used here. The first-token median is 25 to 34 ms across the arms in this table (2060, 40 new tokens).
 
 **FACT, size benchmark (RTX 2060 SUPER, fp16, static cache plus compile).** The pass line was set first: first token 100 ms or less with eye and ear input, decode at least 40 tokens per second, and memory that fits 8 GB at 4k context with the encoders loaded. Inputs were stand-ins, so the benchmark covers speed and memory, not text quality.
 
@@ -73,7 +77,7 @@ Speed is not the limit for a 1.7B brain; memory for long context is. **PENDING:*
 | Picture to first thought | gist 100-150 ms; visual reaction 200-250 ms | 300 ms or less | about 25 to 31 ms on a random-picture stand-in | Below target on stand-in input only; real frames not timed; not a human-timing comparison |
 | Speech to first thought | auditory reaction about 150 ms | 300 ms or less | about 31 ms on 5 s of noise (stand-in) | Below target on stand-in input only; real clips not timed; not a human-timing comparison |
 | Looking at frames | 3-5 looks per second | 1-3 looks per second | 1 look per second, uniform | Glance policy not yet a win |
-| Text output | reads 4-5 words per second | paced to human speed when shown to a person | 173-190 tokens per second | Model is much faster; pacing not built |
+| Text output | reads 4-5 words per second | paced to human speed when shown to a person | about 190 tokens per second (2060, static cache plus compile) | Model is much faster; pacing not built |
 | Long memory | (no single figure) | as long as possible | reliable to 8k, not 16k | Gap remains |
 
 Reading: first-token latency on stand-in inputs is well under the 300 ms target we set, but that is not a comparison with people, and the human references are unchecked. The open gaps are timing on real frames and clips, outward pacing, long memory and the glance policy.
