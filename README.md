@@ -2,7 +2,7 @@
 
 Research notes, tests, results and open questions from training a 143-million-parameter language model from scratch on two consumer graphics cards, and from experiments on a model that keeps learning while it reads.
 
-**This repository contains documentation only: no code, no data and no model weights.** Status of the numbers: 2 November 2026. The work is still running, so everything here is a snapshot, and each document says what a number was measured on.
+**This repository contains documentation only: no code, no data and no model weights.** Status of the numbers: 6 November 2026. The work is still running, so everything here is a snapshot, and each document says what a number was measured on.
 
 ## What the project is
 
@@ -30,6 +30,7 @@ Research notes, tests, results and open questions from training a 143-million-pa
 | Were the senses (eyes, ears) first built from scratch, and can the language model use them? (The from-scratch rule was later lifted for some parts.) | [19 First senses, built from scratch](docs/19-first-senses-built-from-scratch.md) |
 | How much text can the small brain use at once, can its eyes see small details in a wide frame, and how fast is it? | [20 Longer memory, sharper eyes, and speed](docs/20-longer-memory-sharper-eyes-and-speed.md) |
 | Which eye designs read a small object, does replaying old facts really protect them, and how do we check our own work? | [21 Small details, memory, and how we check ourselves](docs/21-small-details-memory-and-how-we-check-ourselves.md) |
+| What did our own CPU code, the notes memory, the improvement loop and the replay check show on 5 and 6 November, and what did the review passes find? | [22 What we learned on the nights of 5 and 6 November](docs/22-what-we-learned-on-the-nights-of-5-and-6-november.md) |
 
 ## Results at a glance
 
@@ -100,6 +101,7 @@ What held up against a control or against a prediction that could have failed: t
 | 19 | [First senses, built from scratch](docs/19-first-senses-built-from-scratch.md) | A tiny image model built from scratch, the bridge that lets the frozen language model read what it sees, the ears (24.6 percent word error rate) and the open design questions |
 | 20 | [Longer memory, sharper eyes, and speed](docs/20-longer-memory-sharper-eyes-and-speed.md) | Corrected context-length tests of the 360M brain, picture-reading tests on a small synthetic detail (tiles, question-driven tile choice, cheaper compressions; two seeds for the main arms), foveated glance, speed and a bigger-brain benchmark, and the code-review lessons that changed conclusions |
 | 21 | [Small details, memory, and how we check ourselves](docs/21-small-details-memory-and-how-we-check-ourselves.md) | Tile and question-driven eye designs at equal training (two seeds for the main arms), the replay-versus-no-replay forgetting test with its limits, and the review habits that caught real bugs before GPU time was spent |
+| 22 | [What we learned on the nights of 5 and 6 November](docs/22-what-we-learned-on-the-nights-of-5-and-6-november.md) | Our own CPU code checked against references (hearing front end, memory reuse, why the 8-bit variant failed on new prompts), the notes-memory retrieval rounds, the improvement-loop safety skeleton, a context test that needed no training, an invalid long-context run, the replay check with its rule now met, the first trained-selector eye results, and how rules-before-code is proved |
 
 ## How to read the labels
 
