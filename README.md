@@ -33,6 +33,7 @@ Research notes, tests, results and open questions from training a 143-million-pa
 | What did our own CPU code, the notes memory, the improvement loop and the replay check show on 5 and 6 November, and what did the review passes find? | [22 What we learned on the nights of 5 and 6 November](docs/22-what-we-learned-on-the-nights-of-5-and-6-november.md) |
 | What did a day of reading the weights of public models show (instruction-tuning size, what "learning to see" changes, what is inside open image generators), and can a released small vision model decide where to look and then read a crop? | [23 Reading the weights of real models, and a first small eye pipeline](docs/23-reading-the-weights-of-real-models-and-a-first-eye-pipeline.md) |
 | What is inside a small released vision-capable model (Qwen3.5-0.8B), how long a context fits on one 8 GB card, and how a colour-reader bias changed our earlier numbers? | [24 Qwen3.5 from the inside, and a reader calibration lesson](docs/24-qwen35-from-the-inside-and-a-reader-calibration-lesson.md) |
+| What do six small tests say about a second look behind a confidence gate, a mask against going back, a cheap glance followed by a zoom, lower-precision weights, a smaller vocabulary and removing whole layers? | [25 Looking in two steps, and what can be cut from a small model](docs/25-looking-in-two-steps-and-what-can-be-cut-from-a-small-model.md) |
 
 ## Results at a glance
 
