@@ -109,3 +109,9 @@ All **FACT** (240 test pictures; the head was trained on photos disjoint from th
 - Why the 256M model does not benefit from a crop.
 - Whether a short repair fine-tune after deleting layers changes the picture.
 - Repeating the instruction-tuning distances on more layers and matrix types.
+
+## Update (later the same day): the reader was miscalibrated
+
+Later checks showed a systematic colour bias in this reader on our test: given a correct crop, it read cyan as blue and misread white. Eight fixed per-colour numbers, fitted without labels on 240 unlabelled pictures, were then tested on 240 new pictures under a written rule. The whole pipeline rose from 0.742 to 0.817 (p about 0.0001), and accuracy given a correct crop from 0.89 to 0.97. **FACT.**
+
+Every SmolVLM2 colour figure in this document used the uncalibrated reader. Calibration raised accuracy on one new set, so these figures are probably floors (GUESS). Pooled over four fresh sets (one of them the set above), the uncalibrated pipeline scored 757 of 960, about 0.79. The crop contained the square in 825 of 960 pictures (0.86). The no-square controls stayed low. Document 24, [Qwen3.5 from the inside, and a reader calibration lesson](24-qwen35-from-the-inside-and-a-reader-calibration-lesson.md), gives the details, the limits and the evidence. **FACT.**

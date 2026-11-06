@@ -32,6 +32,7 @@ Research notes, tests, results and open questions from training a 143-million-pa
 | Which eye designs read a small object, does replaying old facts really protect them, and how do we check our own work? | [21 Small details, memory, and how we check ourselves](docs/21-small-details-memory-and-how-we-check-ourselves.md) |
 | What did our own CPU code, the notes memory, the improvement loop and the replay check show on 5 and 6 November, and what did the review passes find? | [22 What we learned on the nights of 5 and 6 November](docs/22-what-we-learned-on-the-nights-of-5-and-6-november.md) |
 | What did a day of reading the weights of public models show (instruction-tuning size, what "learning to see" changes, what is inside open image generators), and can a released small vision model decide where to look and then read a crop? | [23 Reading the weights of real models, and a first small eye pipeline](docs/23-reading-the-weights-of-real-models-and-a-first-eye-pipeline.md) |
+| What is inside a small released vision-capable model (Qwen3.5-0.8B), how long a context fits on one 8 GB card, and how a colour-reader bias changed our earlier numbers? | [24 Qwen3.5 from the inside, and a reader calibration lesson](docs/24-qwen35-from-the-inside-and-a-reader-calibration-lesson.md) |
 
 ## Results at a glance
 
