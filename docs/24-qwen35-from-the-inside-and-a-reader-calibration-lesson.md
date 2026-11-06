@@ -51,15 +51,15 @@ Each of the 288 linear-attention heads (18 layers, 16 heads each) keeps a memory
 | Heads lasting beyond 1,000 tokens | 8 (2.8%), six of them in layers 0 to 4 (four in layer 0) |
 | Practically permanent heads | 1 |
 
-- The input term is large (median size 0.78), so the stored rate is only a starting point. The words of a text probably change how fast each head forgets. **COMPUTED** for the size; **GUESS** for the rest.
+- The input term has a median row size of 0.78, which by our rough rule suggests it could matter a lot, so the stored rate may be only a starting point. Its real size during text was not measured. The words of a text probably change how fast each head forgets. **COMPUTED** for the row size; **GUESS** for the rest.
 - Our prediction (**GUESS**): facts older than a few hundred tokens are mostly kept by the full-attention caches, unless the input slows a head's forgetting for the words that matter. So the zero-input half-lives may be a lower bound (**GUESS**). The input term could also shorten a head's memory. Our recall test cannot separate the two routes, because the caches hold every token.
 
-## 5. The vocabulary: most of it is unused in English, but the rows are not dead
+## 5. The vocabulary: most of it never appears in children's books, and the unused rows look normal
 
 - The vocabulary has 248,320 tokens and makes up 29.1 percent of the model. In 15.8 million tokens of public-domain children's books (about 80 MB), only 47,913 tokens (19.3 percent) occur at all. **FACT**, for one narrow English domain.
 - Rarely used rows are not smaller, duplicated or lower-dimensional than common ones. Median row length is 0.624 for the rarest tokens and 0.627 for the common ones. Near-duplicates appear in 0.2 percent of a rare-row sample and in none of the common sample (the exception is the 338 base tokens, which are special, byte, prompt and colour tokens). All three pre-stated tests read "no". **FACT.**
-- The rarer the token, the more its row leans toward the table's average direction: the median cosine (how closely two rows point the same way) rises from 0.16 for the 338 base tokens (special, byte, prompt and colour tokens) to 0.48 for the rarest. That fits rows that were trained little, but it does not make them smaller. **FACT** for the trend; **GUESS** for the explanation.
-- So sharing or low-rank compression of the vocabulary is not supported, and removing tokens is the candidate for saving memory (**GUESS**; a trimming test is queued, not run).
+- The rarer the token, the more its row leans toward the table's average direction: the median cosine (how closely two rows point the same way) rises from 0.16 for the 338 base tokens (special, byte, prompt and colour tokens) to 0.48 for the rarest. This could reflect rows that were trained less (training history was not measured), but it does not make them smaller. **FACT** for the trend; **GUESS** for the explanation.
+- So sharing or low-rank compression of the vocabulary is not supported by these numbers. Removal itself is not tested here. **Update, same day:** the trimming test has since run, with cut tokens spelled from single bytes. It found no safe trim point: bits per byte on held-out children's books rose by 0 to 3 percent with 65,536 tokens kept and by 3 to 21 percent with 32,768 kept, and by 19 percent (65,536 kept) on a dictionary-style stress text. A variant that splits cut tokens into the longest kept pieces is queued. **FACT**, for these passages.
 
 ## 6. Long context on one 8 GB card
 
