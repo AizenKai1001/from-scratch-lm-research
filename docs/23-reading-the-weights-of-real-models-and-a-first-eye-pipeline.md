@@ -81,6 +81,7 @@ All **FACT** (240 test pictures; the head was trained on photos disjoint from th
 - The head needs few labels: trained on 120, 240, 480, 1,200 and 2,400 pictures its validation hit rate is 0.79, 0.83, 0.84, 0.86 and 0.88; training and validation agree (0.87 and 0.88). One prompt is enough: a head on the raw question-attention features alone keeps a validation hit rate of 0.877; reading only layers 12 to 20 costs about 9 points. A control with shuffled training labels gives 0.27, so the head is not fitting noise. **FACT** (validation pictures).
 - **Confirmation on 240 fresh pictures** (no photo shared with training, validation or the first test) with the shortened one-prompt head: the crop contains the square in 0.87 (0.82 to 0.91), the colour accuracy through the pipeline is 0.83 (0.78 to 0.88), no-square control 0.13; the two-prompt head is not better (0.89 and 0.84). Median time per picture on our card: about 60 ms for the selector pass (eager attention) plus 35 ms to read the crop, about 96 ms in total, 128 image tokens (64 + 64). The fresh set happened to be easier for the reader than the first test set (right 93 percent of the time when the crop contained the square, against 87 percent), so the two accuracies are not directly comparable. **FACT.**
 - **Other square sizes without retraining** (the head had only seen 40-pixel squares): the crop contains the square in 0.73 for 24-pixel squares, 0.95 for 56-pixel and 0.98 for 80-pixel squares (0.87 for 40 pixels on the same photos); the pipeline's colour accuracy is 0.65, 0.87 and 0.90 against oracle-crop accuracies of 0.85, 0.94 and 0.92. Our rule called the 24-pixel case "partly" and the other two "generalises". **FACT.**
+- **Refitting for the small size did not help.** A head trained on only 120 pictures with 24-pixel squares found the square's crop in 0.66 of 240 fresh pictures (0.60 to 0.72), against 0.73 for the head trained on 2,400 pictures of 40-pixel squares; pooling the 120 small-square pictures with 120 old ones gave 0.70; colour accuracy through the pipeline 0.58, 0.66 and 0.62 (oracle crop on the same pictures 0.84). So the 120-pictures-are-enough result of the 40-pixel learning curve does not carry over to the harder size. **FACT.**
 - Limits: one synthetic task (a high-contrast square on photos), squares from the same generator in training and test, one model, indicative timings only. **GUESS:** for natural objects the same recipe would need labelled examples of the real target.
 
 ## 5. Editing the weights without training
@@ -103,7 +104,7 @@ All **FACT** (240 test pictures; the head was trained on photos disjoint from th
 
 ## 8. Open
 
-- Refitting the selector for 24-pixel squares (the learning curve suggests about 120 pictures), then harder targets: shapes, several objects, natural targets.
+- Small squares: more labelled pictures or other features than a 120-picture refit (see section 4b), then harder targets: shapes, several objects, natural targets.
 - An optimised attention readout (last row only) instead of the full eager attention pass.
 - Why the 256M model does not benefit from a crop.
 - Whether a short repair fine-tune after deleting layers changes the picture.
