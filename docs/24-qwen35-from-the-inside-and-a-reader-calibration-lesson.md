@@ -81,7 +81,7 @@ Memory grows with text length, so long prompts were fed in pieces of 2,048 token
 - Memory grew by about 27 KB per token between 65,536 and 131,072 tokens (**COMPUTED** from the measured peaks). At that rate, 262,144 tokens would need about 8.8 GB, more than the card has (**COMPUTED**, extrapolated from the chunked runs; a single pass would extrapolate to about 23 GB).
 - The failed runs showed about 1.5 GiB reserved but unused (1.47 GiB as PyTorch reports it), which looks like memory that cannot be placed in one piece (**GUESS**). The full context did not fit as implemented. Our earlier "about 6 GB at 262,144 tokens" figure counted weights and cache, plus a guessed 1 GB, and is not supported by measurement. **FACT.**
 - Recall (**FACT**): a four-digit code sits in one sentence of children's-book text, and the question asks only for it. This is the easy case of "needle in a haystack", and it does not show that the model uses the rest of a long text. The 95 percent lower bounds for those cells are 0.80 and 0.70.
-- Scoring bug, found and fixed: the first run allowed only 12 new tokens, so answers were cut before their last digit. It scored 34 of 45, and all 11 misses were cut answers. We found this by reading raw outputs, so the fix (32 new tokens, exactly four digits) is post hoc. Both versions are reported; results use the second. **FACT.**
+- Scoring change, post hoc: the first run allowed only 12 new tokens, so 11 of its 45 answers were cut before their digits could appear. Under that first rule the cells read 15 of 15 at 8,192 tokens, 14 of 15 at 32,768 and 5 of 15 at 65,536 (34 of 45 in all, and all 11 misses were cut answers). After the limit was raised to 32 new tokens (exactly four digits counted) and the cells were re-run, each read 15 of 15 (the table). We changed the limit after reading the raw outputs, so treat the recall at 65,536 and 131,072 tokens as exploratory: the 131,072-token cell (9 of 9) was only run under the changed rule. **FACT.**
 
 ## 7. Reading small squares
 
@@ -115,7 +115,7 @@ Document 23 reported SmolVLM2-500M, a 0.5-billion-parameter vision model, at 0.8
 | White | 21 of 29 |
 | Red, blue, yellow, purple | every picture |
 
-- Not the tokenizer. Scoring each colour by its whole spelling (cyan is two tokens) gave exactly the same 240 answers, so the scores already rank blue above cyan for many cyan squares. **FACT.** A shift per colour fixes that ranking, so the fault looks like calibration rather than seeing (**GUESS**).
+- Probably not the tokenizer. The best spelling of cyan (with a leading space) is a single token, so scoring each colour by its whole spelling could not change any answer, and it did not (the same 240 answers). That arm therefore tests nothing, and a later code review of the lab's scripts found this. What the data do show is that the scores rank blue above cyan for many cyan squares. **FACT.** A shift per colour fixes that ranking, so the fault looks like calibration rather than seeing (**GUESS**).
 - The fix is one fixed number per colour, added to the reader's scores and fitted without labels: over 240 unlabelled pictures, each colour should get the same average probability. This is valid here because the generator draws the colours equally often. **FACT** for the method.
 - The fitted offsets are in the table below. **FACT.**
 
