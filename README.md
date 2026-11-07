@@ -35,6 +35,7 @@ Research notes, tests, results and open questions from training a 143-million-pa
 | What is inside a small released vision-capable model (Qwen3.5-0.8B), how long a context fits on one 8 GB card, and how a colour-reader bias changed our earlier numbers? | [24 Qwen3.5 from the inside, and a reader calibration lesson](docs/24-qwen35-from-the-inside-and-a-reader-calibration-lesson.md) |
 | What do six small tests say about a second look behind a confidence gate, a mask against going back, a cheap glance followed by a zoom, lower-precision weights, a smaller vocabulary and removing whole layers? | [25 Looking in two steps, and what can be cut from a small model](docs/25-looking-in-two-steps-and-what-can-be-cut-from-a-small-model.md) |
 | What do two tests say about an eye that reads a small square with every weight stored in 8 bits, and about a second look behind a confidence gate? | [26 An eye that survives 8-bit weights, and a second look that missed its bar](docs/26-an-eye-that-survives-8-bit-weights-and-a-second-look-that-missed-its-bar.md) |
+| Where does a small hybrid model keep exact facts, and can new facts be written into its weights in one closed-form step? | [27 Where exact facts live, and whether they can be written in](docs/27-where-exact-facts-live-and-whether-they-can-be-written-in.md) |
 
 ## Results at a glance
 
