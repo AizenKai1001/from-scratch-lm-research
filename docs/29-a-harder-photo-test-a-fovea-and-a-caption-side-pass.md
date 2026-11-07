@@ -8,7 +8,7 @@ Each test had a written rule with fixed bars, registered (a checksum and a time)
 
 After the first draft, a separate read-only review by another AI agent went through the rules, scripts and result files. Its findings are built into this text, and the section "Corrections made before publishing" lists what changed.
 
-> **CAVEAT, read first.** The photographs come from the COCO validation set, which is widely copied on the web. The model makers do not disclose the training data of these small models (the Qwen3.5-0.8B model card names no dataset), and a sibling model's technical report describes web image-caption pairs. So it is **plausible, and not checked either way**, that the tested models have met these photographs and their captions. Our controls show the models need the picture. They cannot separate seeing a picture from having met that photo and caption in training. A control on unfamiliar pictures is planned and has not been run. Document 28 used the same photo set, so its photo numbers carry the same caveat.
+> **CAVEAT, read first.** The photographs come from the COCO validation set, which is widely copied on the web. The model makers do not disclose the training data of these small models (the Qwen3.5-0.8B model card names no dataset), and a sibling model's technical report describes web image-caption pairs. So it is **plausible, and not checked either way**, that the tested models have met these photographs and their captions. Our controls show the models need the picture. They cannot separate seeing a picture from having met that photo and caption in training. A control on fresh photographs (section 5) found the same task about 15 points lower on photos uploaded after the models were released, still far above chance; it could not separate memory from caption style and weaker wrong options. Document 28 used the same photo set, so its photo numbers carry the same caveat.
 
 ## Summary
 
@@ -19,6 +19,7 @@ After the first draft, a separate read-only review by another AI agent went thro
 | Does a non-uniform "fovea" at a fixed 40-token budget help? | 2B: FOVEA-NEUTRAL. 0.8B: no registered label applies (UNCLASSIFIED) | Saliency fovea minus plain picture: -2.8 points (0.8B), -1.8 (2B); both intervals reach zero |
 | Does a bare label "Caption:" after a picture change what the model writes? | Registered reading SAYS-WHAT-IT-SEES (0.8B); PARTLY (2B). Read it as: the picture changes the line, and the line beats a random same-category caption. It is not a quality measure | Word overlap 0.31 (0.8B) against 0.01 on a grey picture, 0.16 for a random same-category caption and 0.46 for a human caption |
 | Does the label work inside a running stream of pictures? | Not inside the stream. Yes as a separate caption side pass. Picture-specificity of the stream captions: NOT SHOWN | With a 40-token cap, 147 of 150 and 115 of 120 lines end with sentence punctuation; offline replay about 1.07 times the pictures' own clock |
+| Do the hard-choice results hold on photographs the models cannot have seen? | INCONCLUSIVE by the registered rule (fresh minus COCO about -0.15 for both models; the 2B upper bound sits 0.0002 above the DROP line) | Fresh photos 0.65 (0.8B) and 0.69 (2B) against 0.80 and 0.84 on COCO with the same option rule; chance 0.25; grey picture and text-only at or below chance |
 
 ## 1. Hard wrong captions and a sweep of picture size (test PERC-COCO-2)
 
@@ -122,9 +123,29 @@ The exact-distinct share (0.967 and 0.958) hides near-duplicates: counting a lin
 - That the lines are correct. They are generic scene descriptions from one 0.8B model, not checked against labels.
 - That any of this holds on other material: all caption tests above used still photographs, and the stream runs used two short pieces of moving pictures.
 
+## 5. The same hard choice on photographs the models cannot have seen (test PERC-FRESH-1)
+
+**What we asked.** The review said COCO may be in the training data. Do the hard-choice numbers survive on photographs that cannot be?
+
+**What we did.** 431 photographs uploaded to Wikimedia Commons at least 7 days after the Qwen3.5 repositories were created (cut-off 7 March 2026; the creation date can precede the public release), with captions typed by the uploaders (**PUBLISHED**: licences CC0, CC BY or CC BY-SA; we keep the photos private and do not redistribute them). A script built the set with fixed filters: capture date after the cut-off, 6 to 16 word English captions, bot-like uploaders and template captions dropped, at most 8 photos per uploader. We made a second build after the first came out at 247 photos, below the 300 the rules asked for, because its template filter was broader than intended; the change was written down before any model ran on a fresh photo. Both sets (fresh, and 431 of the COCO items) use the same option rule: the three wrong captions are the other captions in the set with the most content words in common, so pool size and kind of difficulty match. Scoring as in section 1, at 84 picture tokens, with a grey picture and no picture as controls. The rules fixed the readings before the run.
+
+**What we found (FACT).** Accuracy of picking the right caption (chance 0.25), with 95 percent Wilson intervals:
+
+| | 0.8B COCO | 0.8B fresh | 2B COCO | 2B fresh |
+|---|---|---|---|---|
+| With the picture | 0.80 (0.76 to 0.84) | 0.65 (0.61 to 0.70) | 0.84 (0.81 to 0.88) | 0.69 (0.64 to 0.73) |
+| Grey picture | 0.26 | 0.26 | 0.23 | 0.23 |
+| No picture | 0.12 | 0.17 | 0.13 | 0.17 |
+
+Fresh minus COCO: -0.146 (-0.204 to -0.088) for the 0.8B and -0.156 (-0.211 to -0.100) for the 2B. The registered reading was INCONCLUSIVE: the hold needed the lower bound at or above -0.10, and the drop needed the upper bound below -0.10; the 2B upper bound is 0.0002 above that line. Both models pass the "sees" test on the fresh photographs (at least 0.50 with the controls at most 0.35).
+
+**What it means (GUESS).** On photos that cannot be in the training data, both models still pick the right caption 65 to 69 percent of the time among similar wrong ones, and the controls stay at or below chance, so picture content does reach the language side on new photographs. The same pipeline gives about 15 points less than on COCO, so part of the COCO numbers may be memory. The data cannot show how much. The two sets differ in other ways: the fresh captions are longer after cleaning (15 against 10 tokens), 392 of 431 contain a digit or a capitalised word after the first (names and places a picture cannot tell), and their wrong options overlap less with the right caption (mean 0.165 against 0.224, and 62 fresh items needed a random fill). An exploratory split by that name feature (not registered) gave similar accuracy in both parts, but only 39 captions had none. Read the COCO numbers in sections 1 to 3 as an upper bound on typical photographs, and 0.65 to 0.69 as the figure on new photographs under this option rule.
+
+**What it does not show.** That the models never saw a Commons photo (a photo can be an old scene uploaded late or a copy under another name); that the captions are human-written (code cannot prove it; about 35 of the 432 collected captions look terse or non-English); anything about topics beyond the set's skew (UK, Taiwan, US and Australia, a few community campaigns); or a comparison with the section 1 numbers, which used a different option rule (same main category).
+
 ## What we could not conclude, and caveats
 
-- **COCO may be in the training data.** See the caveat at the top. It is plausible and not checked. Photograph numbers here, and in document 28, describe familiar-type photographs, and an earlier internal conclusion that picture-to-language training would not be needed is withdrawn until a fresh-picture control exists.
+- **COCO may be in the training data.** See the caveat at the top, and section 5 for the fresh-photo control (about 15 points lower on new photographs; memory, caption style and weaker wrong options are not separated). It is plausible and not checked. Photograph numbers here, and in document 28, describe familiar-type photographs, and an earlier internal conclusion that picture-to-language training would not be needed is withdrawn until a fresh-picture control exists.
 - **Small tests.** Two sizes of one model family, one prompt label, one run per model, 500 items per photograph test, a 24-token cap in section 3. No judge was used for captions.
 - **Not independent items.** The wrong captions and wrong pictures come from other photographs in the same pool, and the intervals are bootstrapped over items as if independent; a bootstrap over photographs would be wider. About fifteen interval verdicts were made with no correction, so borderline ones (2B at 40 tokens, 2B saliency against random spot, 2B caption score against 0.50) are exploratory.
 - **The easy-end test is at the ceiling.** The generated shapes in document 28 reached 1.00, which shows simple features reach the language side. It says nothing about natural content, faces, text or moving scenes.
@@ -140,6 +161,7 @@ The review changed these statements from the first draft:
 
 - "Very likely in the training data" became "plausible, not checked", and the 98 percent result lost an internal conclusion that picture-to-language training is not needed.
 - The 0.8B fovea verdict NEUTRAL became UNCLASSIFIED (no registered label fits; the script defaulted). The 2B budget verdict became borderline. The 12 percent border mask is 12.5 percent. The saliency spots are concentrated, not spread.
+- A control on fresh photographs was added (section 5) after the first version of this document.
 - "Knee of the curve" became "gains flatten above 84 tokens". The "twelve looks per second" value case was dropped, because look time is flat below 84 tokens.
 - The caption score is described as "the picture changes the line and beats a random same-category caption", with its length, stop-word and readability limits stated.
 - "Writes a readable line after every picture" became "a caption side pass writes a line after every picture, fed back as an input line", with the truncation counts and the 40-token fix. "Inner voice", "remembers" and "picture-specific" are stated as untested or not shown.
