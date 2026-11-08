@@ -18,7 +18,7 @@ After the first draft, a separate read-only review by another AI agent went thro
 | Does the number of picture tokens change this? | Registered readings: BUDGET-SIZE none, GAIN none. The 2B at 40 tokens sits on the budget bar, so call it borderline | Cutting to 40 tokens costs 4.4 points (0.8B) and 1.4 (2B); more tokens gain at most 1.2 points, not separated from zero |
 | Does a non-uniform "fovea" at a fixed 40-token budget help? | 2B: FOVEA-NEUTRAL. 0.8B: no registered label applies (UNCLASSIFIED) | Saliency fovea minus plain picture: -2.8 points (0.8B), -1.8 (2B); both intervals reach zero |
 | Does a bare label "Caption:" after a picture change what the model writes? | Registered reading SAYS-WHAT-IT-SEES (0.8B); PARTLY (2B). Read it as: the picture changes the line, and the line beats a random same-category caption. It is not a quality measure | Word overlap 0.31 (0.8B) against 0.01 on a grey picture, 0.16 for a random same-category caption and 0.46 for a human caption |
-| Does the label work inside a running stream of pictures? | Not inside the stream. Yes as a separate caption side pass. Picture-specificity of the stream captions: NOT SHOWN | With a 40-token cap, 147 of 150 and 115 of 120 lines end with sentence punctuation; offline replay about 1.07 times the pictures' own clock |
+| Does the label work inside a running stream of pictures? | Not inside the stream. Yes as a separate caption side pass. Picture-specificity of the stream captions: NOT SHOWN | With a 40-token cap almost every line ends with sentence punctuation and none is cut; replay about real time. The numbers from these runs are not published (private source) |
 | Do the hard-choice results hold on photographs the models cannot have seen? | INCONCLUSIVE by the registered rule (fresh minus COCO about -0.15 for both models; the 2B upper bound sits 0.0002 above the DROP line) | Fresh photos 0.65 (0.8B) and 0.69 (2B) against 0.80 and 0.84 on COCO with the same option rule; chance 0.25; grey picture and text-only at or below chance |
 
 ## 1. Hard wrong captions and a sweep of picture size (test PERC-COCO-2)
@@ -80,7 +80,7 @@ Registered reading, 2B: FOVEA-NEUTRAL. FOVEA-HELPS needed the saliency arm at le
 
 **What it does not show.** A good description, and the registered word "sees" should not be read as a quality score. Four limits of the measure, found in review:
 
-- The overlap score uses word sets, so precision falls as a line gets longer. The model's lines (18 to 21 words in the stream runs) are longer than the human references (6 to 16 words), so part of the gap to the human level, and part of the gap to the grey picture, may be length or style and not content. Per-item outputs were not saved, so a cross-scoring check (a line against the references of another photograph) cannot be done without a re-run.
+- The overlap score uses word sets, so precision falls as a line gets longer. The model's lines in the stream runs are longer than the human references (6 to 16 words), so part of the gap to the human level, and part of the gap to the grey picture, may be length or style and not content. Per-item outputs were not saved, so a cross-scoring check (a line against the references of another photograph) cannot be done without a re-run.
 - The stop-word list removes counts and direction words ("two", "one", "up", "down", "near", "next"), so the score cannot tell whether a line got "two dogs" right.
 - "Readable" is a character filter (it rejects quotes, colons, brackets and non-ASCII letters) and checks nothing about whether a sentence finished. The 2B's 0.632 may be partly this artefact, because its lines are longer. No hand count of lines has been written.
 - Word overlap cannot judge whether a sentence is true. One label and one length cap were tried. A line the model has memorised from training would also score well (see the caveat).
@@ -89,31 +89,19 @@ Registered reading, 2B: FOVEA-NEUTRAL. FOVEA-HELPS needed the saliency arm at le
 
 **What we asked.** Does the label still work inside a long running stream of pictures, where a line is written after each picture and fed back into the stream?
 
-**What we did.** Two runs of 300 and 240 seconds of pictures, one picture every two seconds, with a line after each. The stream has a header and a diary-like layout, and also carries other input lines that these tests do not examine. We tried five layouts against a check registered before the runs: readable share at least 0.90, distinct share at least 0.80, mean 6 to 24 words, and at most 5 percent empty lines. That check tests format only; it does not test content. The layouts were designed on the first stream (call it scene A), which makes it a tuning scene; the second (scene B) was run only on the final layout.
+**What we did.** Two runs of a few minutes of moving pictures from a private source, one picture every two seconds, with a line after each. The stream has a header and a diary-like layout, and also carries other input lines that these tests do not examine. We tried five layouts against a check registered before the runs (readable share, distinct share, line length and empty lines, with bars fixed in advance). That check tests format only; it does not test content. The layouts were designed on the first stream (so it is a tuning stream); the second was run only on the final layout. The numbers from these two runs are not published, because the material they come from is private; only what they showed is described.
 
 **What we found (FACT).**
 
-- Layout 1 (label on its own line after the stream's line break): all captions empty (150 in one run, 120 in the other).
-- Layout 2 (label straight after the picture's end marker): all 150 empty.
-- Layout 3 (layout 2 plus a hand-set decoding constraint: no line-break token in the first four tokens): 150 lines, all one identical line (distinct share 0.007).
+- Layout 1 (label on its own line after the stream's line break): every caption empty, in both runs.
+- Layout 2 (label straight after the picture's end marker): every caption empty.
+- Layout 3 (layout 2 plus a hand-set decoding constraint: no line-break token in the first four tokens): a line for every picture, all one identical line.
 - Layout 4: a separate short pass that sees only the picture and the label, in a fresh cache. Its line then enters the stream as an input line. We call it the **caption side pass**.
-- Layout 5: layout 4, each line stopped at its first full stop, with a cap of 24 new tokens. It passed the registered format check (readable 0.933, 145 of 150 exact-distinct lines, mean 17.9 words, none empty).
+- Layout 5: layout 4, each line stopped at its first full stop, with a cap of 24 new tokens. It passed the registered format check.
 
-Review found that layout 5 did not do what its check suggested. Counting the lines: 67 of 150 (scene A) and 80 of 120 (scene B) hit the 24-token cap, and 54 and 77 contain no full stop at all, so many lines stopped in the middle of a phrase. The readable check counted these as readable because it only looks at characters. Raising the cap to 40 tokens (layout 6, same everything else) gave:
+Review found that layout 5 did not do what its check suggested. Many lines hit the 24-token cap, and a large share contained no full stop at all, so they stopped in the middle of a phrase. The readable check counted these as readable because it only looks at characters. Raising the cap to 40 tokens (layout 6, same everything else) fixed it: almost every line then ended with sentence punctuation and none was cut at the cap, in both runs. The exact-distinct share hides near-duplicates: counting a line as a duplicate when its content words overlap an earlier line by 0.6 or more, a sizeable share of the lines were near-duplicates, and in the second run the near-distinct share fell below the 0.80 bar we had used for exact strings. Replay ran at about real time (one offline replay of a stored file per stream, not a live measurement, no repeats).
 
-| | Scene A | Scene B |
-|---|---|---|
-| Lines | 150 | 120 |
-| End with sentence punctuation | 147 (0.980) | 115 (0.958) |
-| Cut at the cap | 0 | 0 |
-| Mean words per line | 18.9 | 23.0 |
-| Offline replay speed (stream seconds per wall second) | 1.07 | 1.08 |
-| Near-duplicate share, word overlap at least 0.6 | 0.167 | 0.325 |
-| Near-duplicate share, word overlap at least 0.8 | 0.093 | 0.158 |
-
-The exact-distinct share (0.967 and 0.958) hides near-duplicates: counting a line as a duplicate when its content words overlap an earlier line by 0.6 or more, scene B's near-distinct share is 0.675, below the 0.80 bar we had used for exact strings. Replay speed comes from one offline replay of a stored file per scene (the 24-token layout ran faster, 1.36 times in A and 1.09 in B, because its lines were shorter). It is not a live measurement and has no repeats.
-
-**Is each line about its own picture?** A shuffled-picture check compared a line's content-word overlap with the lines of neighbouring pictures (within 60 seconds) against its overlap with lines of far pictures. The difference was +0.151 (0.131 to 0.173) in scene A and +0.099 (0.078 to 0.120) in scene B; the registered bar was at least +0.10 in both with the lower bound above zero. **Picture-specificity is NOT SHOWN** by that bar (scene B is a hair under), and neighbouring pictures resemble each other in any video, so this is weak evidence either way. Many lines start the same way ("A young" opens 46 of 150 lines in scene A). For the plain Caption test in section 3 the picture dependence is shown (grey picture 0.01 against 0.31); for the stream captions it is not.
+**Is each line about its own picture?** A shuffled-picture check compared a line's content-word overlap with the lines of neighbouring pictures (within 60 seconds) against its overlap with lines of far pictures. The difference was positive in both runs, but the registered bar (at least +0.10 in both, with the lower bound above zero) was not met in the second by a hair. **Picture-specificity is NOT SHOWN** by that bar, and neighbouring pictures resemble each other in any video, so this is weak evidence either way. Many lines start the same way. For the plain Caption test in section 3 the picture dependence is shown (grey picture 0.01 against 0.31); for the stream captions it is not.
 
 **What it means (GUESS).** The label works when the model has seen only the picture and the label. Inside a long text, earlier lines pull the next one toward their own pattern. A separate short pass avoids that, at the cost of a second pass for each picture.
 
@@ -164,7 +152,7 @@ The review changed these statements from the first draft:
 - A control on fresh photographs was added (section 5) after the first version of this document. A second review then made the fresh-photo drop larger in the text (15 to 19 points, not 15).
 - "Knee of the curve" became "gains flatten above 84 tokens". The "twelve looks per second" value case was dropped, because look time is flat below 84 tokens.
 - The caption score is described as "the picture changes the line and beats a random same-category caption", with its length, stop-word and readability limits stated.
-- "Writes a readable line after every picture" became "a caption side pass writes a line after every picture, fed back as an input line", with the truncation counts and the 40-token fix. "Inner voice", "remembers" and "picture-specific" are stated as untested or not shown.
+- "Writes a readable line after every picture" became "a caption side pass writes a line after every picture, fed back as an input line", with the truncation and the 40-token fix. "Inner voice", "remembers" and "picture-specific" are stated as untested or not shown.
 
 ## Label legend
 
