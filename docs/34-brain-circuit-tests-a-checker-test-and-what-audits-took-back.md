@@ -10,6 +10,10 @@ Only audited results are reported. Where an audit took a claim back, this text s
 
 **Audit status words**, as the audit notes use them. **AUDITED-AGREE** means the audit reproduced the numbers and agrees with the verdict. **AUDITED-CORRECTED** means the numbers reproduce, but some wording or readings changed. **AUDITED-INVALID** means the audit says the test cannot answer the question it was written for.
 
+![Animated diagram of six steps, from writing a rule to publishing the audited document, with each step lighting up in turn.](figures/fig-34-01-how-a-test-is-run.gif)
+
+*Figure 34.1.* How each test here is run: the rule and its pass lines are written first, a checksum is logged before the script runs, the test runs with control tests, an independent AI audit recomputes the numbers from the raw files, claims that fail are taken back in the text, and the document is published with its audit status. The checksum order is confirmed only as far as the audits could check; each audit is one pass by a separate AI reviewer, and nothing here has been peer reviewed. The diagram shows no results.
+
 ## Summary
 
 **FACT (audited).** The table lists each test in this document.
@@ -114,6 +118,10 @@ Only audited results are reported. Where an audit took a claim back, this text s
 
 **FACT (audited).** Read by eye, the raw counts show the same direction the model shows. A plain reading of the table would have shown the problem before any model was fitted.
 
+![Grouped bar chart of the direct links from five worm touch cells to a backward and a forward group of command cells, where front cells link mostly to the forward group and back cells only to the backward group.](figures/fig-34-02-touch-links-to-command-groups.png)
+
+*Figure 34.2.* Direct chemical links from five touch cells to two groups of command cells, from a wiring table (audited, status AUDITED-CORRECTED). Front cells link mostly to the forward group (15, 10 and 49 links, against 3, 0 and 2 to the backward group) and back cells only to the backward group (14 and 21 links, against 0). This is the opposite of the registered prediction, and it was visible in the raw counts before any model was fitted. It is a statement about the wiring table, not about a real worm.
+
 **FACT (audited).** Two probes ruled out two suspected causes. One changed the set of nodes (302 neurons, and a version with 473 nodes). The other changed how scores were normalised. The sign stayed negative in every case. The lab's first guess that normalisation caused the sign is taken back.
 
 **FACT (audited).** The verdict is KILL under the registered lines. The gap-only variant gave a p of 0.065, and the combined variant 0.068, both just above the 5 percent line. A PASS was out of reach. The audit says a KILL hides the fact that the chemical result is reversed, not just unsupported. Status: AUDITED-CORRECTED.
@@ -136,6 +144,10 @@ Only audited results are reported. Where an audit took a claim back, this text s
 
 **FACT (audited).** On the main seeds the joint floor's average error was 0.163. The old-rule error was 3.69 at replay share 0.05 and 1.07 at 0.25. Both are above 0.49, which is three times the floor. Without replay it was 3.95. The verdict is KILL.
 
+![Bar chart of old-rule error on a toy that keeps learning: 0.163 for the joint floor, 3.95 with no replay, 3.69 at replay share 0.05 and 1.07 at 0.25, with a dashed kill line at 0.49.](figures/fig-34-03-toy-replay-share-old-rule-error.png)
+
+*Figure 34.3.* Old-rule error of a small linear toy that learned four rules one after another (main seeds, status AUDITED-AGREE). Replay lowers the error (3.95 with none, 3.69 at a share of 0.05, 1.07 at 0.25) but both replay arms stay above the kill line of 0.49, three times the joint-training floor of 0.163, so the registered verdict was KILL. The floor control passed narrowly (0.163 against a limit of 0.198). The scale is linear and starts at zero.
+
 **FACT (audited).** Controls. The positive control passed narrowly, at 0.163 against a limit of 0.198. Per-seed floors ranged from 0.09 to 0.43, so the margin is narrow by nature. The negative control and the separation check also passed.
 
 **FACT (audited).** The pilot pass was thin. The pilot gave 0.191 against a line of 0.207. A learning rate of 0.03 at the same step count gave 0.389. So the chosen setting sits near a cliff.
@@ -157,6 +169,10 @@ Only audited results are reported. Where an audit took a claim back, this text s
 **FACT (audited).** The question was whether a memory matrix can recall events, and their order, when they are written in. The verdict is UNCLEAR, and the audit agrees that UNCLEAR is fair.
 
 **FACT (audited).** Taken back: the claim that writing only at event boundaries beats writing every step. The gap depends on how many junk writes the per-step arm makes between events. With 0, 1, 2, 5 and 10 junk writes the gap was 0.000, 0.053, 0.205, 0.541 and 0.697. With no junk writes the two arms are identical.
+
+![Line chart showing the gap between two ways of writing into a memory matrix rising from 0.000 with no junk writes to 0.697 with ten junk writes.](figures/fig-34-04-event-boundary-writing-gap.png)
+
+*Figure 34.4.* Gap between writing a memory matrix at event boundaries only and writing at every step, against the number of junk writes the every-step method makes between events (0, 1, 2, 5 and 10 junk writes: 0.000, 0.053, 0.205, 0.541, 0.697; status AUDITED-CORRECTED, overall verdict UNCLEAR). With no junk writes the two methods are identical, so the audit took back the claim that boundary writing beats every-step writing. The document gives no unit for the gap.
 
 **FACT (audited).** Taken back: the win over a list of the same memory size. The list was stored at full precision. Stored at half precision, the same memory holds 64 pairs, with recall of 0.32, a tie with the matrix at 0.332.
 
@@ -206,6 +222,10 @@ Only audited results are reported. Where an audit took a claim back, this text s
 
 **FACT (audited).** Without replay, skill 2 fell to 0.153, 0.507 and 0.183 across the three seeds. With replay it stayed at its starting level, 299 or 300 of 300. The replay arm matched the arm trained on true labels to within 0.001.
 
+![Bar chart of skill 2 scores after learning a third skill, 0.153, 0.507 and 0.183 in three seeds without replay and 299 or 300 of 300 with replay.](figures/fig-34-05-replay-own-answers-skill-2.png)
+
+*Figure 34.5.* Skill 2 after the model learned a third skill (status AUDITED-CORRECTED). Without replay it fell to 0.153, 0.507 and 0.183 in the three seeds; with replay of the model's own earlier answers it stayed at its starting level, 299 or 300 of 300. The third skill scored 300 of 300 in all ten runs, so this test could not show any cost of replay on that skill; protection is shown for skill 2 only, with three seeds and one setting.
+
 **FACT (audited).** The gap between no replay and replay on skill 2 was about 0.70. That is about twice the registered band.
 
 **FACT (audited).** Seven corrections. The audit's numbered list is given here in plain words.
@@ -237,6 +257,10 @@ Only audited results are reported. Where an audit took a claim back, this text s
 **FACT (audited).** The checker also raised 25 extra findings. We checked each one against its original. Eleven were real weaknesses in the originals, and six of those were already known to the planter. Three restated points the originals had already disclosed. None was a false alarm.
 
 **FACT (audited).** Limits. This was one run. One error is 10 points of score. The edits were simple. The brief named exactly which checks to run, which is probably why the checker was thorough. The checker and the planter come from the same model family, so they may share blind spots.
+
+![Two rows of five tiles, each marking a planted error as found, above a strip of ten green squares showing 10 of 10 found against a pass line of 8.](figures/fig-34-06-checker-planted-errors.png)
+
+*Figure 34.6.* Planted-flaw test of our own checker (audited by construction). Five errors that can be spotted inside a report and five that show only against the raw result files or the rules were planted in five short reports; the checker found all 10 against a registered pass line of 8 of 10. One run (one error is 10 points of score), simple edits, a brief that named the checks, and a planter and checker from the same model family; subtler flaws were not planted.
 
 **FACT (audited).** Subtler flaws were not planted: post-hoc thresholds, selective reporting of arms, and hidden multiple comparisons. The skeptic saw the file names of the originals and one note naming a source. It did not read their contents. This is a minor leak, and the audit disclosed it.
 

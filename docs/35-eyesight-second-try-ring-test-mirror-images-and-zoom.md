@@ -22,6 +22,10 @@ These are definitions, not results.
 - **Mirror-image test (MIRROR-1).** A character and its left-right reversed copy. The five characters are R, F, 5, 2 and 4. Each is shown upright, or turned on the screen by 60, 120, 180, 240 or 300 degrees. The brain is asked in words: is this the normal character or its mirror image?
 - **Zoom test (ZOOM-1).** A picture of 384 by 384 pixels with one black letter (H, O, T or V) on white. A zoom is a new, closer look at one quarter, drawn at double size. Two steps give four times the size; four steps give sixteen. In TOLD arms the right quarter is given. In SELF arms the brain's own answer picks it. ONE LOOK means the whole picture, once. RANDOM is a blank white picture, as a control.
 
+![Animated illustration of a black letter H on a plain white 384 by 384 picture, shown at stroke widths of 8, 4, 2, 1 and 0.5 pixels, with a close-up where each square is one pixel.](figures/fig-35-01-size-of-a-stroke.gif)
+
+*Figure 35.1.* A redrawn illustration, not the exact test pictures: a black letter H on a plain white picture of 384 by 384 pixels at stroke widths of 8, 4, 2, 1 and 0.5 pixels, with a close-up in which each square is one pixel. The letter shape, its height of five stroke widths and its placement on a pixel corner are drawn for illustration only.
+
 ## Summary
 
 **FACT (audited).** The table lists each result in this document.
@@ -107,6 +111,10 @@ These are definitions, not results.
 
 **FACT (audited).** Centred reading, upright: small 21, middle 25 and big 31 of 40. The big brain's 31 of 40 has the interval 0.625 to 0.877. By the registered rule its word is BETWEEN.
 
+![Grouped bar chart of right answers out of 40 upright mirror-image pictures for a small, middle and big model under two readings, with a dashed guessing line at 20.](figures/fig-35-02-mirror-image-upright.png)
+
+*Figure 35.2.* Right answers out of 40 upright pictures of a character or its mirror image, for the small, middle and big models (status AUDITED). Plain reading: 20, 24 and 24; centred reading: 21, 25 and 31; guessing gives 20. An exploratory analysis in the same audit found that the place of a word in the question moves the score about three to eight times as much as reversal does. No person took this test.
+
 **FACT (audited, exploratory).** When the centring is done inside each character, the upright counts are 30, 33 and 37 of 40. Each would be BETWEEN. So the word depends on how the centring is done.
 
 ### Upright twins (exploratory)
@@ -191,6 +199,10 @@ A twin is the same character, at the same place and angle, once normal and once 
 **FACT (audited).** Over two steps the big brain's own aim ends on the letter in 169 of 192 tries. Its one-look threshold is 0.5 pixel. Its zoomed threshold is 0.25 pixel, half the one-look size. That is the most this arm could show, because 0.25 was its smallest size.
 
 **FACT (audited).** The gain shows at one size only. At 0.25 pixel the brain reads 8 of 32 in one look and 31 of 32 with its own zoom. At the five larger sizes one look already reads 26 to 32 of 32. Its own zoom reads 27 to 32 on the same pictures.
+
+![Line chart of the big model's right answers out of 32 at six stroke sizes, one look against its own two-step zoom, with a gain only at 0.25 pixel.](figures/fig-35-03-zoom-big-brain-stroke-size.png)
+
+*Figure 35.3.* Right answers out of 32 for the big model at six stroke widths, in one look at the whole picture and after two zoom steps where its own answer picks the quarter (status AUDITED). From 8 down to 0.5 pixel one look already scores 26 to 32 and its own zoom 27 to 32; at 0.25 pixel one look scores 8 and the zoom 31, so the gain shows at that one size only, and 0.25 was the smallest size offered. When the right quarter was given instead, the model scored 32 of 32 at every size.
 
 ### The big brain: four steps (ZOOM-NO-GAIN)
 
