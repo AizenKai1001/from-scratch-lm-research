@@ -1,14 +1,20 @@
 # From-scratch language model research
 
-Research notes, tests, results and open questions from training a 143-million-parameter language model from scratch on two consumer graphics cards, and from experiments on a model that keeps learning while it reads.
+Research notes, tests, results and open questions from training a 143-million-parameter language model from scratch on two consumer graphics cards, from experiments on a model that keeps learning while it reads, and from tests of small frozen open models given eyes, ears, memory and motion.
 
 **This repository contains documentation only: no code, no data and no model weights.** Status of the numbers: 11 November 2026, and 12 November 2026 for document 34. The work is still running, so everything here is a snapshot, and each document says what a number was measured on.
 
 ## What the project is
 
+The work has four strands and a record of how we tested them. The first two strands are the original ones; the last two grew from them.
+
 - **A base model trained from scratch.** 142.9 million parameters, 12 transformer blocks, a 1,024-token context and a 32,768-token vocabulary. It is trained in chained sessions of about 25 minutes on one home graphics card, so a bad session costs minutes, not days. By the evening of 30 October it had finished 42 sessions and seen about 2.1 billion tokens of a planned 9 billion. Its planned final cooldown has not run yet, so all its numbers are for an unfinished model.
 - **A "reader" built on a copy of that model.** After reading each short stretch of text it takes one small learning step, it can go back over the stretches that surprised it, and it is checked with quizzes instead of being corrected by them. The aim is a model that goes on learning from whatever it reads. The base model exists so that this reader's brain is our own and can be measured.
-- **A record of how we tested things.** For the larger decisions the rules for pass and fail were written before the data existed (a few were changed later, and each change is listed), controls were run first, a second (AI) reviewer was asked to find mistakes, and the claims we had to take back are listed.
+- **Frozen open models with small add-ons.** From early November the tests moved to small public models that are never retrained (mostly 0.8B, 2B and 4B parameters; documents 20 and 21 use a 360M model), plus a small adapter or a reader on top. They ask what such a model can see, hear and remember: reading a small coloured square, naming the direction of motion in generated pictures, transcribing read speech through a frozen ear, keeping the order of events, and knowing when its own answer is wrong. Documents 20 to 33 and 35 report these tests.
+- **Toy and simulated tests.** Document 34 reports a unit test of our own neuron and synapse code, tests of a worm wiring table, replay tests on toy models, and a test of our own checker with planted errors.
+- **A record of how we tested things.** For the larger decisions the rules for pass and fail were written before the data existed (a few were changed later, and each change is listed), controls were run first, a second (AI) reviewer was asked to find mistakes, and the claims we had to take back are listed. Documents 33 to 35 are mostly that record: what the audits took back.
+
+**Where things stand (12 November 2026).** Many early claims did not survive their audits, and the documents say which. A tiny adapter and a trail of faded earlier frames let a frozen model name the direction of generated shapes (document 31). A frozen ear with a small adapter transcribed clean read speech (document 30). The 2B model keeps the order of events better than the 0.8B (document 32). A model's own confidence is a weak sign that an answer is wrong (documents 32 and 33). On eyesight, the audits took back most of the stronger readings, and the zoom test helped at one size only (document 35). The base model from scratch is unfinished (document 03). Each number is a snapshot of one run unless a document says otherwise.
 
 ## The questions this repository answers
 
