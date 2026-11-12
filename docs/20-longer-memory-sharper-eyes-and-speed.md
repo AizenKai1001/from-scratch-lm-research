@@ -23,7 +23,7 @@ No 32k or 64k score exists in our result files. Earlier notes listed zeros for t
 
 **INVALID: continued training.** A continued-training run with a larger position base (rope base 1,000,000) was meant to lift the model to 16k and 32k tokens: 200 steps at 8k, then 100 at 16k, then 60 at 32k, under a limit of 180 minutes of training time. It stopped at 244 of 360 steps (200 of 200 at 8k, 44 of 100 at 16k, 0 of 60 at 32k) when the limit was reached after 181.5 minutes. No steps were skipped. The weights were saved but not scored, so the run gives no retrieval number, and it is **INVALID** by its own rule (schedule incomplete). The time limit was set from a step-time estimate that had not been measured. A first attempt had crashed after 60 seconds on a configuration argument, and its job then showed RUNNING for about 12.5 hours. A RUNNING status is not a result.
 
-**PENDING: resume.** A resume (56 steps at 16k, then 60 at 32k) is written. Its script passed a CPU-only check: the model loaded with the new position setting, and attention and output matched the reference. No training was run in that check. The GPU job was refused twice because the weekly Kaggle GPU quota (30 hours) was used up. It is expected to take about 7 hours once the quota resets, and no retrieval number will be claimed until it is scored with the corrected generator and the key audit.
+**PENDING: resume.** A resume (56 steps at 16k, then 60 at 32k) is written. Its script passed a CPU-only check: the model loaded with the new position setting, and attention and output matched the reference. No training was run in that check. The GPU job was refused twice because no GPU time was available. It is expected to take about 7 hours once the quota resets, and no retrieval number will be claimed until it is scored with the corrected generator and the key audit.
 
 ## 2. Sharper eyes
 
@@ -130,7 +130,7 @@ The first-token figures are well under the 300 ms target, but they are not a com
 
 ## What is still open
 
-- The continued-training resume, once the Kaggle quota resets; then a key-audited needle test. The 32k, 128k and 1M stages have not started. Each has a written pass rule, and the 1M target is tried only after 128k passes.
+- The continued-training resume, once GPU time is available; then a key-audited needle test. The 32k, 128k and 1M stages have not started. Each has a written pass rule, and the 1M target is tried only after 128k passes.
 - Arm J's seed 12 run (running), the clean rerun of arms A, B and H3 (queued, not started), and a clean run for arm I (queued, not started; arm J is not queued).
 - Quiet-card timing for the eye arms and the speed benchmark, a second seed for the glance arms, and a benchmark on the 4060.
 - Real video frames instead of the synthetic square.

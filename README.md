@@ -43,6 +43,7 @@ Research notes, tests, results and open questions from training a 143-million-pa
 | Does a bigger frozen model (2B against 0.8B) keep the order of events better, where is that order stored, how much faster can a small adapter-training step be made, and do the models know when their answer is wrong? Includes independent AI-agent audits, a precision control, and a list of our own mistakes | [32 Order memory in a bigger model, a faster training step, and knowing what it does not know](docs/32-order-memory-training-speed-and-knowing-what-it-does-not-know.md) |
 | Do the frozen brains know when they are wrong, learn from right and wrong, remember pictures, see, and turn pictures in their heads? Includes independent audits, an eyesight test that measured nothing, and a list of what the audits took back | [33 What the frozen brains know about what they know, how they learn from right and wrong, and what the audits took back](docs/33-what-the-brains-know-how-they-learn-and-what-audits-took-back.md) |
 | Do our simulated neurons match textbook behaviour, does a worm wiring table point the touch direction the right way, does replay keep old skills, and what did the audits take back on 12 November? Includes a planted-flaw test of our own checker (10 of 10 found, one run) | [34 What we tested on 12 November and what the audits took back](docs/34-brain-circuit-tests-a-checker-test-and-what-audits-took-back.md) |
+| Can a repaired ring test find the side of a gap, can a brain tell a character from its mirror image, and does a zoom help? Three eyesight tests on generated pictures, with what the audits took back | [35 Eyesight, a second try: a repaired ring test, a mirror-image test and a zoom test](docs/35-eyesight-second-try-ring-test-mirror-images-and-zoom.md) |
 
 ## Results at a glance
 
@@ -141,6 +142,7 @@ What held up against a control or against a prediction that could have failed: t
 | 32 | [Order memory in a bigger model, a faster training step, and knowing what it does not know](docs/32-order-memory-training-speed-and-knowing-what-it-does-not-know.md) | The 2B against the 0.8B on event order, a readout of memory heads, a compiled training step, and confidence signals |
 | 33 | [What the frozen brains know about what they know, how they learn from right and wrong, and what the audits took back](docs/33-what-the-brains-know-how-they-learn-and-what-audits-took-back.md) | Audited tests of confidence, learning, picture memory, eyesight and rotation, and what the audits took back |
 | 34 | [What we tested on 12 November and what the audits took back](docs/34-brain-circuit-tests-a-checker-test-and-what-audits-took-back.md) | Simulated neurons, a worm wiring table, replay tests and a planted-flaw test of our checker, with the audit corrections |
+| 35 | [Eyesight, a second try: a repaired ring test, a mirror-image test and a zoom test](docs/35-eyesight-second-try-ring-test-mirror-images-and-zoom.md) | Letters and rings at tiny sizes, a mirror-image test against published human numbers, and a zoom test, with what the audits took back |
 
 ## How to read the labels
 
