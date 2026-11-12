@@ -92,14 +92,24 @@ The audit found why. Every question was asked in two option orders that were mir
 - The imagination test (version 2) failed its own seeing check for both brains. No imagination claim is made.
 - For two add-ons, the file fingerprint was logged after first use. We state the order here.
 
+## Audited after this document was first written
+
+The following audits were dated 11 November 2026. Each was an independent AI pass that recomputed the numbers from the raw files, checked the written rule and tried to break each sentence built on the result. The status words and verdict wording below are the audits' own. Where a word needs a plain reading, the sentence after it says what was taken back. No number is added here.
+
+- **Teaching "don't know" (CONF-2).** The numbers were confirmed with caveats. The registered word for both brains is CONF2-DID-NOT-LEARN. Confirmed: the taught brains say "don't know" to almost everything and lose what they knew. Not confirmed as worded: "it did not learn to tell the two apart" and "teaching removed the aim the untaught brains had". A weak aim was learned, but it is too weak to reach the answer. The shuffled control was not shown to be unaimed, so "nothing leaks" is withdrawn. The audit's verdict: the recipe failed, not that these brains cannot be taught this.
+- **Eyesight with zoom (ZOOM-1).** The big brain's registered word over two steps is ZOOM-FULL-GAIN, confirmed with caveats: it aims the zoom itself, and the gain shows at one size only. Over four steps the word is ZOOM-NO-GAIN, as derived. The middle and small brains are not judged. Taken back: the general claim that zoom works, the claim that the big brain loses its way over a long chain, the claim that it missed the largest size by one answer, the claim that the parts of an eye with zoom are there, and the claim that the middle brain knows top from bottom every time. "Should be teachable" is a plan, not a finding.
+- **Eyesight, repaired ring and letter test (ACUITY-2).** The repaired test was run and audited. This replaces the line above that says it is registered and not yet run. Confirmed as derived: CAN-READ-THE-SIGN for letters (all three brains), SAME-EYE, and TURN-BLIND for the small brain. Not confirmed: "the limit is the picture, not the brain", "seven times coarser than normal sight", and "they see WHAT a small sign is, but not WHICH WAY it points". The audit also found that the ring answers go by the place of the word in the question.
+- **Mirror image (MIRROR-1).** Registered words: MIRROR-BLIND for the small and middle brains (the difference does not decide the answer), and BETWEEN for the big brain on the centred reading. The people's numbers were confirmed at the source. Not confirmed: "cannot tell a letter from its mirror image, even upright" (the score moves the right way in all three brains, a little), "the eye does not hand the brain left and right", and "the same weakness as in the picture memory and the ring". Taken back: "we gave our three brains the same pictures", since the people saw different pictures and had practice. The audit also found that the R was drawn off-centre and says this does not flatter the result.
+- **Fresh practice, small brain (NBACK-4).** The headline numbers were confirmed. Taken back: the human comparison is fair for the two-back test only. On the other test people find it easier and the add-on finds it harder. No human number exists for mirror images. The word the note attaches to the human comparison is not a registered word for this add-on.
+
 ## In progress, not audited
 
 None of the following is a result. No numbers are reported, and none may be cited.
 
-- Teaching "don't know" with a small add-on (CONF-2), a watcher read-out (WATCH-1), and sorting, belief-strength and sleep-style replay tests (SORT-1, SHIFT-1, SLEEP-1).
+- A watcher read-out (WATCH-1), and sorting, belief-strength and sleep-style replay tests (SORT-1, SHIFT-1, SLEEP-1).
 - A notebook test, where the brain writes its own notes and is scored with the notebook open and closed (LEARN-3, VAULT-1).
-- Eyesight: a zoom test (ZOOM-1) and a repaired ring test (ACUITY-2). Mirror-image and hearing tests for people (MIRROR-1, HEAR-H1), and aimed tapping (MOTOR-1); the lab body is a display, so no body-control result is possible yet.
-- Fresh-practice tests for the small brain on one-kind and cut-out pictures (NBACK-4). No person has yet taken our picture-memory test.
+- Hearing tests for people (HEAR-H1), and aimed tapping (MOTOR-1); the lab body is a display, so no body-control result is possible yet.
+- No person has yet taken our picture-memory test.
 
 ## What this does not show
 

@@ -122,7 +122,7 @@ The first-token figures are well under the 300 ms target, but they are not a com
 - **A shell quoting bug.** A launch script written through a double-quoted remote heredoc had its variables expanded on the wrong machine, and came out empty. It was caught before any training started. Rule now: write scripts locally and copy them.
 - **Single-run noise.** The identical squashed arm varied by 0.07 between runs (section 2). Single-run gaps are read against that spread.
 - **Speed numbers were capped by pacing.** A sleep inside the timed loop of the live watcher meant its speed figure could not exceed about 1.0 by construction. A replacement watcher without the sleep is built but not yet run (**PENDING**).
-- **Leakage in the live hearing check.** The first live viewer used a hearing connector trained on the same film it was scored on, so its scores measured memorised dialogue. Live scoring now uses the clean-speech connector or the held-out part of the film only.
+- **Leakage in the live hearing check.** The first live viewer used a hearing connector trained on the same recordings it was scored on, so its scores measured memorised dialogue. Live scoring now uses the clean-speech connector or the held-out part of the recording only.
 - **Test rows reused across choices.** The eye tests used the same 300 test canvases to choose wording and gates (section 2 audit). The clean rerun separates them.
 - **Timing under load.** Timings taken while another job held the GPU are void, and the per-frame numbers in the early eye runs are of this kind.
 - **Max-of-three timing is optimistic.** Medians of at least five runs are now used.
