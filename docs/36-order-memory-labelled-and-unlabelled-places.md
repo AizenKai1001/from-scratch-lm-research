@@ -1,5 +1,7 @@
 # 36. Order and memory over a stream: a registered test, the gates that failed, and what the audit allows us to say
 
+> **Later note (13 November 2026).** A registered follow-up, [document 37](37-order-2c-labelled-recall-and-the-re-shown-copy.md), added the labelled arm, a re-shown copy and the stream-swap control that this document lacked. It replicated the unlabelled misses, closed the 'provisional' status of the verdicts here, narrowed 'the unlabelled result is a counting result' to an operational reading, and left the 'no memory claim' conclusion standing.
+
 Version 1. Snapshot dated 12 November 2026. The run and its audit took place on 12 November 2026.
 
 ## Abstract

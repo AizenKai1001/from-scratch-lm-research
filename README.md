@@ -59,6 +59,7 @@ The work has four strands and a record of how we tested them. The first two stra
 | Do our simulated neurons match textbook behaviour, does a worm wiring table point the touch direction the right way, does replay keep old skills, and what did the audits take back on 12 November? Includes a planted-flaw test of our own checker (10 of 10 found, one run) | [34 What we tested on 12 November and what the audits took back](docs/34-brain-circuit-tests-a-checker-test-and-what-audits-took-back.md) |
 | Can a repaired ring test find the side of a gap, can a brain tell a character from its mirror image, and does a zoom help? Three eyesight tests on generated pictures, with what the audits took back | [35 Eyesight, a second try: a repaired ring test, a mirror-image test and a zoom test](docs/35-eyesight-second-try-ring-test-mirror-images-and-zoom.md) |
 | Can two frozen language models say which item sits at a named place in a stream, with and without labels? A registered test, the gates that failed, and what the audit allows us to say | [36 Order and memory over a stream: a registered test, the gates that failed, and what the audit allows us to say](docs/36-order-memory-labelled-and-unlabelled-places.md) |
+| Do a place label or a second copy of the list repair place recall in two frozen models? A registered follow-up on fresh streams with a stream-swap control that closes the last run, and what the audit allows us to say | [37 Labelled recall and the re-shown copy: a registered follow-up on place recall in a stream, and what the audit allows us to say](docs/37-order-2c-labelled-recall-and-the-re-shown-copy.md) |
 
 ## Results at a glance
 
@@ -159,6 +160,7 @@ What held up against a control or against a prediction that could have failed: t
 | 34 | [What we tested on 12 November and what the audits took back](docs/34-brain-circuit-tests-a-checker-test-and-what-audits-took-back.md) | Simulated neurons, a worm wiring table, replay tests and a planted-flaw test of our checker, with the audit corrections |
 | 35 | [Eyesight, a second try: a repaired ring test, a mirror-image test and a zoom test](docs/35-eyesight-second-try-ring-test-mirror-images-and-zoom.md) | Letters and rings at tiny sizes, a mirror-image test against published human numbers, and a zoom test, with what the audits took back |
 | 36 | [Order and memory over a stream: a registered test, the gates that failed, and what the audit allows us to say](docs/36-order-memory-labelled-and-unlabelled-places.md) | Which item sat at a named place, with and without labels, for two frozen models: lookup by label near 99 percent, unlabelled recall at or below the line, and the memory reading the audit took back |
+| 37 | [Labelled recall and the re-shown copy: a registered follow-up on place recall in a stream, and what the audit allows us to say](docs/37-order-2c-labelled-recall-and-the-re-shown-copy.md) | The unlabelled misses replicate on fresh streams; with a place digit the same items are answered at 0.94 to 1.00; a second copy of the list closes most of the gap; the stream-swap control passes; no memory claim |
 
 ## How to read the labels
 
